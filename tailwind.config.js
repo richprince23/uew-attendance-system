@@ -6,7 +6,11 @@ export default {
         "./resources/**/*.vue",
       ],
   theme: {
-    extend: {},
+    extend: {
+        backgroundImage: {
+            'auth_bg': "url('/images/auth_bg.jpg')"
+        }
+    },
   },
   plugins: [],
 }

@@ -1,0 +1,106 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Bootstrap
+// @import 'bootstrap/scss/bootstrap';
+
+
+// google fonts // rubik and assistant
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+// // Tailwind CSS
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
+
+
+
+h1, h2, h3,
+h4, h5, h6{
+    @extend .rubik-bold;
+}
+
+body{
+    @extend .assistant;
+}
+
+
+// FONTS
+// assistant normal
+.assistant{
+    font-family: "Assistant", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+// assistant bold
+.assistant-bold{
+    font-family: "Assistant", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  // assistant light
+  .assistant-light{
+    font-family: "Assistant", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+  }
+
+  //assistant italic
+.assistant-italic{
+    font-family: "Assistant", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: italic;
+}
+
+// rubik normal
+.rubik{
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+// rubik bold
+.rubik-bold{
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+// rubik light
+.rubik-light{
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+}
+
+// rubik italic
+.rubik-italic{
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: italic;
+}
+
+@layer components {
+    .form-group{
+        @apply flex flex-col w-auto my-2;
+    }
+
+    .form-control{
+        @apply py-3 px-4 rounded-lg my-2;
+    }
+
+    .btn-primary{
+        @apply bg-blue-700 text-white hover:bg-blue-400 hover:text-black form-control;
+    }
+}
+
