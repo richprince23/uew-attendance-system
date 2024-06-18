@@ -18,9 +18,9 @@ class DepartmentRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('department_id')
-                    ->required()
-                    ->maxLength(255),
+                // Forms\Components\TextInput::make('department_id')
+                //     ->required()
+                //     ->maxLength(255),
             ]);
     }
 

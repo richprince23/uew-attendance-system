@@ -30,6 +30,11 @@ class CourseRelationManager extends RelationManager
             ->recordTitleAttribute('course_name')
             ->columns([
                 Tables\Columns\TextColumn::make('course_name'),
+                Tables\Columns\TextColumn::make('course_code'),
+                Tables\Columns\TextColumn::make('lecturer.name'),
+                Tables\Columns\TextColumn::make('year'),
+                Tables\Columns\TextColumn::make('semester'),
+
             ])
             ->filters([
                 //

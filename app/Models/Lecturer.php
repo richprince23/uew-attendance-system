@@ -12,6 +12,7 @@ class Lecturer extends Model
     protected $fillable = [
         'name',
         'email',
+        'department_id',
         'phone',
     ];
 

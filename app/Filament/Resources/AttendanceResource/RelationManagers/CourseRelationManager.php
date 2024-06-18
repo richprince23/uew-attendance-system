@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\EnrollmentResource\RelationManagers;
+namespace App\Filament\Resources\AttendanceResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -10,15 +10,15 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class StudentRelationManager extends RelationManager
+class CourseRelationManager extends RelationManager
 {
-    protected static string $relationship = 'student';
+    protected static string $relationship = 'course';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('index_number')
+                Forms\Components\TextInput::make('course_id')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -27,14 +27,9 @@ class StudentRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('index_number')
+            ->recordTitleAttribute('course_id')
             ->columns([
-                Tables\Columns\TextColumn::make('index_number'),
-                Tables\Columns\TextColumn::make('other_names'),
-                Tables\Columns\TextColumn::make('surname'),
-                Tables\Columns\TextColumn::make('level'),
-                Tables\Columns\TextColumn::make('group'),
-                Tables\Columns\TextColumn::make('department.name'),
+                Tables\Columns\TextColumn::make('course_id'),
             ])
             ->filters([
                 //

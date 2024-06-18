@@ -24,6 +24,13 @@ class Enrollment extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function students(){
+        return $this->hasMany(Student::class);
+    }
+
+    public function getStudents(){
+        return $this->students();
+    }
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {

@@ -22,6 +22,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -52,7 +53,13 @@ class User extends Authenticatable implements FilamentUser
      * @return bool
      */
     public function canAccessPanel(Panel $panel): bool {
-        // return str_ends_with($this->email, '@user.com') && $this->hasVerifiedEmail();
+        // if ($this->role == 'admin' && $panel->path('/admin')){
+
+        //     return true;
+        // }
+
+        // return false;
+        // return str_ends_with($this->role, 'admin');
         return true;
     }
 }

@@ -4,11 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AttendanceResource\Pages;
 use App\Filament\Resources\AttendanceResource\RelationManagers;
+use App\Filament\Resources\AttendanceResource\RelationManagers\CourseRelationManager;
+use App\Filament\Resources\AttendanceResource\RelationManagers\EnrollmentRelationManager;
 use App\Models\Attendance;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -31,10 +34,14 @@ class AttendanceResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('enrollment.student.other_names')->label('Other Names')->searchable()->sortable(),
+                TextColumn::make('enrollment.student.surname')->label('Other Names')->searchable()->sortable(),
+                TextColumn::make('enrollment.course.course_name')->label('Course')->searchable()->sortable(),
+
+
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -49,7 +56,8 @@ class AttendanceResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            EnrollmentRelationManager::class,
+            CourseRelationManager::class,
         ];
     }
 

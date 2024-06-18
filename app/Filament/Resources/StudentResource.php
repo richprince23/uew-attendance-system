@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Filament\Resources\StudentResource\RelationManagers\DepartmentRelationManager;
+use App\Filament\Resources\StudentResource\RelationManagers\EnrollmentRelationManager;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -78,7 +79,8 @@ class StudentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            DepartmentRelationManager::class
+            DepartmentRelationManager::class,
+            EnrollmentRelationManager::class
         ];
     }
 
@@ -87,6 +89,7 @@ class StudentResource extends Resource
         return [
             'index' => Pages\ListStudents::route('/'),
             'create' => Pages\CreateStudent::route('/create'),
+            'view' => Pages\ViewStudent::route('/{record}'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
     }

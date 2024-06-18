@@ -49,7 +49,7 @@ class Student extends Model
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('student_id', 'like', '%'.$search.'%')
+                $query->where('index_number', 'like', '%'.$search.'%')
                     ->orWhere('other_names', 'like', '%'.$search.'%')
                     ->orWhere('surname', 'like', '%'.$search.'%')
                     ->orWhere('email', 'like', '%'.$search.'%')

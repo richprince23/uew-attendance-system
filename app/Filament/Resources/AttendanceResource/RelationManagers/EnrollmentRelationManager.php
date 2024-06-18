@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\EnrollmentResource\RelationManagers;
+namespace App\Filament\Resources\AttendanceResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -10,37 +10,33 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class StudentRelationManager extends RelationManager
+class EnrollmentRelationManager extends RelationManager
 {
-    protected static string $relationship = 'student';
+    protected static string $relationship = 'enrollment';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('index_number')
-                    ->required()
-                    ->maxLength(255),
+                // Forms\Components\TextInput::make('enrollment_id')
+                //     ->required()
+                //     ->maxLength(255),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('index_number')
+            ->recordTitleAttribute('enrollment_id')
             ->columns([
-                Tables\Columns\TextColumn::make('index_number'),
-                Tables\Columns\TextColumn::make('other_names'),
-                Tables\Columns\TextColumn::make('surname'),
-                Tables\Columns\TextColumn::make('level'),
-                Tables\Columns\TextColumn::make('group'),
-                Tables\Columns\TextColumn::make('department.name'),
+                Tables\Columns\TextColumn::make('enrollment_id'),
+                Tables\Columns\TextColumn::make('course.course_id'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

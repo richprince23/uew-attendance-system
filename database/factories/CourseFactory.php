@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Lecturer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,6 +22,7 @@ class CourseFactory extends Factory
             'course_code' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
             'semester' => $this->faker->randomElement(['First', 'Second']),
             'lecturer_id' => $this->faker->randomDigitNot(0),
+            // 'lecturer_id' => Lecturer::factory(),
             'year' => $this->faker->year(),
             'department_id' => $this->faker->randomDigitNot(0),
         ];
