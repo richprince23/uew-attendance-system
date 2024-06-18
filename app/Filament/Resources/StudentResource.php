@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Filament\Resources\StudentResource\RelationManagers\DepartmentRelationManager;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -24,16 +25,6 @@ class StudentResource extends Resource
 
 
 
-public function getTabs(): array
-{
-    return [
-        'all' => Tab::make(),
-        'active' => Tab::make()
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('active', true)),
-        'inactive' => Tab::make()
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('active', false)),
-    ];
-}
     public static function form(Form $form): Form
     {
         return $form
@@ -58,7 +49,7 @@ public function getTabs(): array
                 TextColumn::make('phone')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('department_id')
+                TextColumn::make('department.name')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('index_number')
@@ -72,7 +63,7 @@ public function getTabs(): array
                     ->sortable(),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -87,7 +78,7 @@ public function getTabs(): array
     public static function getRelations(): array
     {
         return [
-            // RelationManagers\Course::class,
+            DepartmentRelationManager::class
         ];
     }
 

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CourseResource\Pages;
 use App\Filament\Resources\CourseResource\RelationManagers;
 use App\Filament\Resources\CourseResource\RelationManagers\DepartmentRelationManager;
+use App\Filament\Resources\CourseResource\RelationManagers\EnrollmentRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\LecturerRelationManager;
 use App\Models\Course;
 use Filament\Forms;
@@ -64,6 +65,7 @@ class CourseResource extends Resource
         return [
                 DepartmentRelationManager::class,
                 LecturerRelationManager::class,
+                EnrollmentRelationManager::class,
         ];
     }
 

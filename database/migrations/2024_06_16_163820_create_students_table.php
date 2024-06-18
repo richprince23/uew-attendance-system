@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('other_names', 50);
             $table->bigInteger('index_number');
             $table->integer('level');
+            $table->string('gender');
             $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
             $table->string('group')->nullable();
             $table->string('email', 100)->unique();

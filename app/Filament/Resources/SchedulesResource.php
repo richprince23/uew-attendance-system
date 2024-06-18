@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -31,7 +32,14 @@ class SchedulesResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('course_code')->label('Course Code')->sortable()->searchable(),
+                TextColumn::make('lecturer.name')->label('Lecturer')->sortable()->searchable(),
+                TextColumn::make('venue')->label('Venue')->sortable()->searchable(),
+                TextColumn::make('room')->label('Room')->sortable()->searchable(),
+                TextColumn::make('day')->label('Day')->sortable()->searchable(),
+                TextColumn::make('start_time')->label('Start')->sortable()->searchable()->time('H:i'),
+                TextColumn::make('end_time')->label('End')->sortable()->searchable()->time('H:i'),
+
             ])
             ->filters([
                 //
