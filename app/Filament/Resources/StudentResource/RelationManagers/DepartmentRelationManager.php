@@ -29,7 +29,9 @@ class DepartmentRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('department_id')
             ->columns([
-                Tables\Columns\TextColumn::make('department_id'),
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('faculty'),
+                Tables\Columns\TextColumn::make('hod'),
             ])
             ->filters([
                 //

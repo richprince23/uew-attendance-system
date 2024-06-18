@@ -30,6 +30,8 @@ class AttendanceResource extends Resource
             ]);
     }
 
+    
+
     public static function table(Table $table): Table
     {
         return $table
@@ -44,7 +46,7 @@ class AttendanceResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -57,7 +59,7 @@ class AttendanceResource extends Resource
     {
         return [
             EnrollmentRelationManager::class,
-            CourseRelationManager::class,
+            // CourseRelationManager::class,
         ];
     }
 
@@ -66,6 +68,7 @@ class AttendanceResource extends Resource
         return [
             'index' => Pages\ListAttendances::route('/'),
             'create' => Pages\CreateAttendance::route('/create'),
+            'view' => Pages\CreateAttendance::route('/{record}'),
             'edit' => Pages\EditAttendance::route('/{record}/edit'),
         ];
     }

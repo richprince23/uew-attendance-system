@@ -7,6 +7,7 @@ use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Filament\Resources\StudentResource\RelationManagers\DepartmentRelationManager;
 use App\Filament\Resources\StudentResource\RelationManagers\EnrollmentRelationManager;
 use App\Models\Student;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +17,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\Components\Tab;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 
 
 class StudentResource extends Resource
@@ -72,6 +75,17 @@ class StudentResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('Export')
+                    ->icon('heroicon-m-arrow-down-tray')
+                    ->openUrlInNewTab()
+                    ->deselectRecordsAfterCompletion()
+                    ->action(function (Collection $records) {
+                        return response()->streamDownload(function () use ($records) {
+                            echo Pdf::loadHTML(
+                                Blade::render('StudentPDF', ['records' => $records])
+                            )->stream();
+                        }, 'student-list.pdf');
+                    }),
                 ]),
             ]);
     }

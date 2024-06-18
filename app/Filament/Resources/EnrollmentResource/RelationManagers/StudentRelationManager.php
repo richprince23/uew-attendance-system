@@ -27,7 +27,7 @@ class StudentRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('index_number')
+            ->recordTitleAttribute('surname')
             ->columns([
                 Tables\Columns\TextColumn::make('index_number'),
                 Tables\Columns\TextColumn::make('other_names'),
@@ -40,7 +40,7 @@ class StudentRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
