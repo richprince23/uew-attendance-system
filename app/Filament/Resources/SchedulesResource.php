@@ -32,7 +32,7 @@ class SchedulesResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('course_code')->label('Course Code')->sortable()->searchable(),
+                TextColumn::make('course.course_code')->label('Course Code')->sortable()->searchable(),
                 TextColumn::make('lecturer.name')->label('Lecturer')->sortable()->searchable(),
                 TextColumn::make('venue')->label('Venue')->sortable()->searchable(),
                 TextColumn::make('room')->label('Room')->sortable()->searchable(),

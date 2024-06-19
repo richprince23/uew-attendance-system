@@ -29,7 +29,10 @@ class EnrollmentRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('course_id')
             ->columns([
-                Tables\Columns\TextColumn::make('course_id'),
+                Tables\Columns\TextColumn::make('student.name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('student.level')->searchable()->sortable()->label('Level'),
+                Tables\Columns\TextColumn::make('student.group')->searchable()->sortable()->label('Group'),
+                Tables\Columns\TextColumn::make('student.department.name'),
             ])
             ->filters([
                 //

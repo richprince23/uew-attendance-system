@@ -4,8 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Filament\Resources\StudentResource\RelationManagers\AttendaceRelationManager;
 use App\Filament\Resources\StudentResource\RelationManagers\DepartmentRelationManager;
 use App\Filament\Resources\StudentResource\RelationManagers\EnrollmentRelationManager;
+use App\Models\Department;
 use App\Models\Student;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
@@ -13,6 +15,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -41,10 +45,13 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('other_names')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('surname')
+                // TextColumn::make('other_names')
+                //     ->searchable()
+                //     ->sortable(),
+                // TextColumn::make('surname')
+                //     ->searchable()
+                //     ->sortable(),
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
@@ -67,9 +74,17 @@ class StudentResource extends Resource
                     ->sortable(),
             ])
             ->filters([
+                Filter::make('is_featured')
+                ->query(fn (Builder $query): Builder => $query->where('department', '>', 400)),
+                // SelectFilter::make('department')
+                // ->multiple()
+                // ->options(Department::class)
+                SelectFilter::make('department')->relationship('department', 'name')
 
+            #
             ])
             ->actions([
+                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -93,8 +108,9 @@ class StudentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            DepartmentRelationManager::class,
-            EnrollmentRelationManager::class
+            // DepartmentRelationManager::class,
+            EnrollmentRelationManager::class,
+            AttendaceRelationManager::class,
         ];
     }
 

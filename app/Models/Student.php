@@ -25,19 +25,25 @@ class Student extends Model
         return $this->belongsTo(Department::class);
     }
 
-    public function enrollments()
-    {
-        return $this->hasMany(Enrollment::class);
-    }
+    // public function enrollments()
+    // {
+    //     return $this->hasMany(Enrollment::class);
+    // }
 
     public function enrollment()
     {
         return $this->belongsTo(Enrollment::class);
     }
 
-
+    public function getNameAttribute(){
+        return $this->other_names. ' '. $this->surname;
+    }
 
     public function attendance()
+    {
+        return $this->belongsTo(Attendance::class);
+    }
+    public function attendances()
     {
         return $this->hasMany(Attendance::class);
     }
@@ -66,5 +72,10 @@ class Student extends Model
             });
         });
     }
+
+    //attendances relationship
+
+
+
 
 }

@@ -34,14 +34,15 @@ class LecturerResource extends Resource
                 TextInput::make('name')->required()->string(),
                 TextInput::make('phone')->required()->numeric(),
                 TextInput::make('email')->required()->rules(['email']),
-                Forms\Components\Select::make('department_id')
-                    ->label('Department')
-                    // ->dehydrated(false)
-                    ->options(Department::pluck('name', 'id'))
-                    // ->afterStateUpdated(function (Livewire $livewire) {
-                    //     $livewire->reset('data.department.id');
-                    // }),
+                // Forms\Components\Select::make('department_id')
+                //     ->label('Department')
+                //     // ->dehydrated(false)
+                //     ->options(Department::pluck('name', 'id'))
+                //     // ->afterStateUpdated(function (Livewire $livewire) {
+                //     //     $livewire->reset('data.department.id');
+                //     // }),
 
+                Select::make('department_id')->label('Select Department')->relationship('department', 'name')
 
             ]);
     }

@@ -41,10 +41,13 @@ class EnrollmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('student.other_names')->label('Other Names')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('student.surname')->label('Surname')
+                // Tables\Columns\TextColumn::make('student.other_names')->label('Other Names')
+                //     ->sortable()
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('student.surname')->label('Surname')
+                //     ->sortable()
+                //     ->searchable(),
+                Tables\Columns\TextColumn::make('student.name')->label('Name')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('course.course_name')

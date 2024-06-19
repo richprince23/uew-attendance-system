@@ -6,11 +6,14 @@ use App\Filament\Resources\AttendanceResource\Pages;
 use App\Filament\Resources\AttendanceResource\RelationManagers;
 use App\Filament\Resources\AttendanceResource\RelationManagers\CourseRelationManager;
 use App\Filament\Resources\AttendanceResource\RelationManagers\EnrollmentRelationManager;
+use App\Filament\Resources\AttendanceResource\RelationManagers\StudentRelationManager;
 use App\Models\Attendance;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Count;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,23 +33,22 @@ class AttendanceResource extends Resource
             ]);
     }
 
-    
+
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('enrollment.student.other_names')->label('Other Names')->searchable()->sortable(),
-                TextColumn::make('enrollment.student.surname')->label('Other Names')->searchable()->sortable(),
-                TextColumn::make('enrollment.course.course_name')->label('Course')->searchable()->sortable(),
 
-
+                TextColumn::make('course.course_name')->label('Course')->searchable()->sortable(),
+                TextColumn::make('date'),
             ])
             ->filters([
 
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -58,8 +60,8 @@ class AttendanceResource extends Resource
     public static function getRelations(): array
     {
         return [
-            EnrollmentRelationManager::class,
-            // CourseRelationManager::class,
+            StudentRelationManager::class,
+            CourseRelationManager::class,
         ];
     }
 

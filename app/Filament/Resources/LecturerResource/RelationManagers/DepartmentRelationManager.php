@@ -14,37 +14,37 @@ class DepartmentRelationManager extends RelationManager
 {
     protected static string $relationship = 'department';
 
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('department_id')
-                    ->required()
-                    ->maxLength(255),
-            ]);
-    }
+    // public function form(Form $form): Form
+    // {
+    //     return $form
+    //         ->schema([
+    //             // Forms\Components\TextInput::make('department_id')
+    //             //     ->required()
+    //             //     ->maxLength(255),
+    //         ]);
+    // }
 
-    public function table(Table $table): Table
-    {
-        return $table
-            ->recordTitleAttribute('department_id')
-            ->columns([
-                Tables\Columns\TextColumn::make('department_id'),
-            ])
-            ->filters([
-                //
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
-    }
+    // public function table(Table $table): Table
+    // {
+    //     return $table
+    //         ->recordTitleAttribute('department_id')
+    //         ->columns([
+    //             // Tables\Columns\TextColumn::make('department_id'),
+    //         ])
+    //         ->filters([
+    //             //
+    //         ])
+    //         ->headerActions([
+    //             Tables\Actions\CreateAction::make(),
+    //         ])
+    //         ->actions([
+    //             Tables\Actions\EditAction::make(),
+    //             Tables\Actions\DeleteAction::make(),
+    //         ])
+    //         ->bulkActions([
+    //             Tables\Actions\BulkActionGroup::make([
+    //                 Tables\Actions\DeleteBulkAction::make(),
+    //             ]),
+    //         ]);
+    // }
 }

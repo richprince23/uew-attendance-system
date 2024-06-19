@@ -30,6 +30,9 @@ class LecturerRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('phone')->label('Contact'),
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
                 //

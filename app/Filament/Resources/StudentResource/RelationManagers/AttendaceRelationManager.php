@@ -3,8 +3,6 @@
 namespace App\Filament\Resources\StudentResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -12,32 +10,32 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class EnrollmentRelationManager extends RelationManager
+class AttendaceRelationManager extends RelationManager
 {
-    protected static string $relationship = 'enrollment';
+    protected static string $relationship = 'attendance';
 
-    // public function form(Form $form): Form
-    // {
-    //     return $form
-    //         ->schema([
-    //             Select::make('course_id')->relationship('course', 'course_name'),
-    //             TextInput::make('student_id')->visible(false)->default('student_id')
-    //         ]);
-    // }
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('student__id')
+                    ->required()
+                    ->maxLength(255),
+            ]);
+    }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('student_id')
+            ->recordTitleAttribute('student__id')
             ->columns([
-                Tables\Columns\TextColumn::make('course.course_name'),
-                // Tables\Columns\TextColumn::make('course_id')->label('Course')->,
+                Tables\Columns\TextColumn::make('student__id'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                // Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
