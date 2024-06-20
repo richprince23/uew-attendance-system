@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Filament\Resources\AttendanceResource\RelationManagers;
+namespace App\Filament\Resources\SchedulesResource\RelationManagers;
 
-use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -15,8 +14,6 @@ class StudentRelationManager extends RelationManager
 {
     protected static string $relationship = 'student';
 
-    
-
     public function form(Form $form): Form
     {
         return $form
@@ -24,8 +21,6 @@ class StudentRelationManager extends RelationManager
                 Forms\Components\TextInput::make('id')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('other_names'),
-                Forms\Components\TextInput::make('surname'),
             ]);
     }
 
@@ -35,18 +30,16 @@ class StudentRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('name'),
-
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                // Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

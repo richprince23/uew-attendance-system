@@ -46,9 +46,9 @@ class DatabaseSeeder extends Seeder
         Department::factory(10)->create();
         Student::factory(100)->create();
         Lecturer::factory(20)->create();
-        Course::factory(20)->create();
+        Course::factory(10)->create();
         Enrollment::factory(100)->create();
-        Schedules::factory(100)->create();
+        Schedules::factory(10)->create();
         Attendance::factory(100)->create();
     }
 }

@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SchedulesResource\Pages;
 use App\Filament\Resources\SchedulesResource\RelationManagers;
+use App\Filament\Resources\SchedulesResource\RelationManagers\AttendanceRelationManager;
+use App\Filament\Resources\SchedulesResource\RelationManagers\StudentRelationManager;
 use App\Models\Schedules;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -57,7 +59,8 @@ class SchedulesResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // StudentRelationManager::class,
+            AttendanceRelationManager::class,
         ];
     }
 

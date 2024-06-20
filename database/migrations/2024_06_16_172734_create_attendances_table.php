@@ -16,7 +16,7 @@ return new class extends Migration
             // $table->foreignId('enrollment_id')->constrained('enrollments')->cascadeOnDelete();
             $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
             $table->foreignId('student_id')->constrained('students')->cascadeOnDelete();
-            $table->foreignId('schedule_id')->constrained('schedules')->cascadeOnDelete();
+            $table->foreignId('schedules_id')->constrained('schedules')->cascadeOnDelete();
             $table->date('date');
             $table->time('time_in');
             $table->string('status', 16);

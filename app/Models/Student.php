@@ -39,9 +39,12 @@ class Student extends Model
         return $this->other_names. ' '. $this->surname;
     }
 
+    public function name(){
+        return $this->getNameAttribute();
+    }
     public function attendance()
     {
-        return $this->belongsTo(Attendance::class);
+        return $this->hasMany(Attendance::class);
     }
     public function attendances()
     {

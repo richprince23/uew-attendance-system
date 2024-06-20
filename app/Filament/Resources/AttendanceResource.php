@@ -23,6 +23,8 @@ class AttendanceResource extends Resource
 {
     protected static ?string $model = Attendance::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -61,7 +63,7 @@ class AttendanceResource extends Resource
     {
         return [
             StudentRelationManager::class,
-            CourseRelationManager::class,
+            // CourseRelationManager::class,
         ];
     }
 

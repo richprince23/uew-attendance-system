@@ -74,8 +74,8 @@ class StudentResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                Filter::make('is_featured')
-                ->query(fn (Builder $query): Builder => $query->where('department', '>', 400)),
+                Filter::make('graduated')
+                ->query(fn (Builder $query): Builder => $query->where('level', '>', 400)),
                 // SelectFilter::make('department')
                 // ->multiple()
                 // ->options(Department::class)

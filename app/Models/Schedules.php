@@ -32,6 +32,11 @@ class Schedules extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
+
     public function scopeFilterCourse($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {

@@ -44,6 +44,7 @@ class Attendance extends Model
     public function schedule(){
         return $this->belongsTo(Schedules::class);
     }
+
     // public function scopeFilterCourse($query, array $filters)
     // {
     //     $query->when($filters['search'] ?? null, function ($query, $search) {
