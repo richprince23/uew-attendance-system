@@ -22,7 +22,7 @@ class CourseFactory extends Factory
             'course_code' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
             'semester' => $this->faker->randomElement(['First', 'Second']),
             'lecturer_id' => $this->faker->randomDigitNot(0),
-            // 'lecturer_id' => Lecturer::factory(),
+            'level' => $this->faker->randomElement(['100', '200', '300', '400']),
             'year' => $this->faker->year(),
             'department_id' => $this->faker->randomDigitNot(0),
         ];

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Faculty;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -13,7 +14,7 @@ class DepartmentFactory extends Factory
     private static $faculty = [
         'Faculty of Social Sciences Education',
         'Faculty of Science Education',
-        'FSchool of Creative Arts',
+        'School of Creative Arts',
         'School of Business',
         'Faculty of Ghanaian Languages Education',
         'Faculty of Foreign Languages Education',
@@ -83,9 +84,11 @@ class DepartmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->randomElement(self::$department),
+            'name' => $this->faker->unique()->randomElement(self::$department),
             'code' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'faculty' => $this->faker->randomElement(self::$faculty),
+            // 'faculty' => $this->faker->randomElement(self::$faculty),
+            'faculty_id' => $this->faker->randomDigitNotZero(),
+            // 'faculty_id' => Faculty::factory(),
             'description' => $this->faker->sentences(3, true),
             'hod' => $this->faker->name()
         ];

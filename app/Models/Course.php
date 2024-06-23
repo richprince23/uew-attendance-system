@@ -13,9 +13,10 @@ class Course extends Model
         'course_name',
         'course_code',
         'semester',
+        'level',
         'lecturer_id',
         'year',
-        'department',
+        'department_id',
     ];
 
     public function schedules()

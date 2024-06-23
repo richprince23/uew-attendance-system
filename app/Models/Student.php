@@ -17,6 +17,7 @@ class Student extends Model
         'phone',
         'level',
         'group',
+        'gender',
         'department_id',
     ];
 

@@ -21,6 +21,8 @@ class EnrollmentResource extends Resource
 {
     protected static ?string $model = Enrollment::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -32,11 +34,11 @@ class EnrollmentResource extends Resource
     }
 
     public function getStateUsing(Model $record): array
-{
-    return [
-        'student_name' => $record->other_names . '  ' . $record->surname,
-    ];
-}
+    {
+        return [
+            'student_name' => $record->other_names . '  ' . $record->surname,
+        ];
+    }
     public static function table(Table $table): Table
     {
         return $table
@@ -47,18 +49,12 @@ class EnrollmentResource extends Resource
                 // Tables\Columns\TextColumn::make('student.surname')->label('Surname')
                 //     ->sortable()
                 //     ->searchable(),
-                Tables\Columns\TextColumn::make('student.name')->label('Name')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('course.course_name')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('year')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('semester')
-                    ->sortable()
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('student.name')->label('Name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('course.course_name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('year')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('semester')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('semester')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('course.level')
             ])
             ->filters([
                 //
@@ -76,7 +72,7 @@ class EnrollmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-                CourseRelationManager::class,
+            CourseRelationManager::class,
             StudentRelationManager::class,
         ];
     }

@@ -4,8 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DepartmentResource\Pages;
 use App\Filament\Resources\DepartmentResource\RelationManagers;
+use App\Filament\Resources\DepartmentResource\RelationManagers\CourseRelationManager;
 use App\Models\Department;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,7 +26,12 @@ class DepartmentResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')->rules('required|string'),
+                TextInput::make('code')->rules('string'),
+                TextInput::make('hod')->rules('string')->required(),
+                Select::make('faculty_id')->label('Select Faculty')->relationship('faculty', 'name')
+
+
             ]);
     }
 
@@ -31,12 +39,10 @@ class DepartmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->sortable()
-                    ->searchable(),
-                    Tables\Columns\TextColumn::make('faculty')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('code')->sortable(),
-                Tables\Columns\TextColumn::make('hod')->sortable(),
+                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
+                    Tables\Columns\TextColumn::make('faculty.name')->sortable()->searchable()->label('Faculty'),
+                Tables\Columns\TextColumn::make('code')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('hod')->sortable()->searchable(),
 
             ])
             ->filters([
@@ -55,7 +61,7 @@ class DepartmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CourseRelationManager::class,
         ];
     }
 

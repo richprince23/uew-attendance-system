@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('course_name', 100);
             $table->string('course_code', 10)->unique();
             $table->string('semester', 20);
+            $table->integer('level');
             $table->foreignId('lecturer_id')->constrained('lecturers')->onDelete('cascade');
             $table->year('year');
             $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');

@@ -14,17 +14,17 @@ class Department extends Model
         'description',
         'code',
         'hod',
-        'faculty',
+        'faculty_id',
     ];
 
     public function courses()
     {
         return $this->hasMany(Course::class);
     }
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
+    // public function users()
+    // {
+    //     return $this->hasMany(User::class);
+    // }
     public function students()
     {
         return $this->hasMany(Student::class);
@@ -33,6 +33,11 @@ class Department extends Model
     {
         return $this->hasMany(Lecturer::class);
     }
+
+    public function faculty(){
+        return $this->belongsTo(Faculty::class);
+    }
+
     public function schedules()
     {
         return $this->hasMany(Schedules::class);

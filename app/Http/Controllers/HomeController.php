@@ -25,4 +25,15 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function dashboard()
+    {
+        if (auth()->user()->hasRole('admin')) {
+            return view('admin.dashboard');
+        } else if (auth()->user()->hasRole('lecturer')) {
+            return view('lecturer.dashboard');
+        } else {
+            return view('student.dashboard');
+        }
+    }
 }
