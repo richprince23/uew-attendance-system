@@ -7,6 +7,10 @@ export default {
       ],
   theme: {
     extend: {
+        screens:{
+            'tb': '640px',
+            'md': '992px'
+          },
         backgroundImage: {
             'auth_bg': "url('/images/auth_bg.jpg')"
         }
