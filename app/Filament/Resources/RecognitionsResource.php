@@ -18,13 +18,13 @@ class RecognitionsResource extends Resource
 {
     protected static ?string $model = Recognitions::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-face-smile';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+
             ]);
     }
 
@@ -38,7 +38,7 @@ class RecognitionsResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

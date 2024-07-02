@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -18,7 +19,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
@@ -38,7 +39,8 @@ class UserResource extends Resource
 
             ])
             ->filters([
-                //
+                Filter::make('isNotAdmin')->default()
+                ->query(fn(Builder $query): Builder => $query->where('role', '!=', 'admin')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
