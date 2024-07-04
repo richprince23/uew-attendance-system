@@ -9,6 +9,7 @@ use Forms\Concerns\InteractsWithForms;
 
 class StudentImages extends Page implements HasForms
 {
+    // use Forms\Concerns\InteractsWithForms; 
     protected static string $resource = StudentResource::class;
 
     protected static string $view = 'filament.resources.student-resource.pages.student-images';

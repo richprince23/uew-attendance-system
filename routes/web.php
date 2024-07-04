@@ -12,4 +12,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
 
 
-// Route::get('/students', [App\Http\Controllers\StudentController::class, 'index'])->name('students.index');
+Route::post('/get-encodings', [App\Http\Controllers\StudentController::class, 'getEncodings'])->name('getEncodings');

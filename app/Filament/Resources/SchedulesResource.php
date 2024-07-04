@@ -8,6 +8,7 @@ use App\Filament\Resources\SchedulesResource\RelationManagers\AttendanceRelation
 use App\Filament\Resources\SchedulesResource\RelationManagers\StudentRelationManager;
 use App\Models\Schedules;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -26,7 +27,15 @@ class SchedulesResource extends Resource
     {
         return $form
             ->schema([
-                //
+                // Select::make('course.course_code')->relationship('course', 'course_name'),
+                // Select::make('lecturer.name')->relationship('lecturer', 'name'),
+                 // Forms\Components\Select::make('department_id')
+                //     ->label('Department')
+                //     // ->dehydrated(false)
+                //     ->options(Department::pluck('name', 'id'))
+                //     // ->afterStateUpdated(function (Livewire $livewire) {
+                //     //     $livewire->reset('data.department.id');
+                //     // }),
             ]);
     }
 
