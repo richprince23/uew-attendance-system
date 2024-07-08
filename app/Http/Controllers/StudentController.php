@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Filament\Notifications\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -10,7 +11,9 @@ class StudentController extends Controller
 
     public function getEncodings(Request $request)
     {
+        Notification::make('success')->title('Success');
 
+        // dd($request->all());
         if (!$request->has("image") || $request->image == "") {
             return response()->json(['status'=> 'Failed: No image found'],404);
         }
