@@ -29,7 +29,7 @@
                     <option value="">Select a camera</option>
                 </select>
 
-                <input type="hidden" name="student_id" value="{{ $record->id }}">
+                <input type="hidden" name="student_id" value="{{ $record->id }}" id="s_id">
 
                 <div class="flex flex-row flex-wrap my-4 justify-start">
                     <x-filament::button class="mx-2" id="start" icon="heroicon-m-video-camera" outlined
@@ -151,14 +151,36 @@
                 const videoW = boxRect.width * scaleFactorX;
                 const videoH = boxRect.height * scaleFactorY;
 
-                // Ensure the croppedCanvas size matches the guiding box size
+                const boxAspectRatio = boxRect.width / boxRect.height;
+
+                // Calculate the dimensions of the area to crop from the video frame
+                let cropWidth = videoW;
+                let cropHeight = videoH;
+                if (videoW / videoH > boxAspectRatio) {
+                    // Video is wider than the box aspect ratio
+                    cropWidth = videoH * boxAspectRatio;
+                } else {
+                    // Video is taller than the box aspect ratio
+                    cropHeight = videoW / boxAspectRatio;
+                }
+
+                // Adjust the cropping area to maintain centering
+                const cropX = videoX + (videoW - cropWidth) / 2;
+                const cropY = videoY + (videoH - cropHeight) / 2;
+
+                // Set croppedCanvas dimensions to match the guiding box aspect ratio
                 const croppedCanvas = document.getElementById('croppedCanvas');
                 croppedCanvas.width = boxRect.width;
                 croppedCanvas.height = boxRect.height;
+                croppedCanvas.classList.add('w-[320px]');
                 const croppedContext = croppedCanvas.getContext('2d');
 
                 // Draw the cropped region from the video frame onto croppedCanvas
-                croppedContext.drawImage(video, videoX, videoY, videoW, videoH, 0, 0, boxRect.width, boxRect.height);
+                croppedContext.drawImage(
+                    video,
+                    cropX, cropY, cropWidth, cropHeight,
+                    0, 0, croppedCanvas.width, croppedCanvas.height
+                );
 
                 // Convert the cropped canvas to a Blob and set it as the file input value
                 croppedCanvas.toBlob((blob) => {
@@ -173,6 +195,10 @@
                 // Update the photo element to show the cropped image
                 const data = croppedCanvas.toDataURL("image/png");
                 photo.setAttribute("src", data);
+
+
+                guidingBox.style.height = (height - 20) + "px";
+                guidingBox.style.width = (height - 20) + "px";
             } else {
                 clearphoto();
             }
@@ -206,7 +232,29 @@
         clearphoto();
 
         document.getElementById('imageForm').addEventListener('submit', (event) => {
-            // Allow the form to submit
+            event.preventDefault();
+            const student_id = document.querySelector("#s_id");
+            const formData = new FormData();
+            formData.append('image', inputImage.files[0]);
+            formData.append('student_id', student_id.value);
+
+            fetch('/api/facial-recognition', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Facial recognition successful!');
+                        // You can update the UI or perform other actions here
+                    } else {
+                        alert('Facial recognition failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred during facial recognition.');
+                });
         });
     </script>
 
@@ -220,8 +268,11 @@
             z-index: 1;
         }
 
-        #croppedCanvas{
-            width: auto !important;
+        #croppedCanvas {
+            /* width: 320px !important; */
+            object-fit: contain;
+            max-width: 100%;
+            height: auto;
         }
     </style>
 
