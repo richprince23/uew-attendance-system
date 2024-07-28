@@ -11,6 +11,7 @@ class Recognitions extends Model
 
     protected $fillable = [
         'face_encodings',
+        'student_id',
     ];
 
     public function student()

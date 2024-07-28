@@ -6,6 +6,7 @@
     <main class="" x-load-js="[@js(\Filament\Support\Facades\FilamentAsset::getScriptSrc('webcamjs'))]">
         <p class="my-8">Capture student's face for recognition</p>
         <p class="text-xl font-bold my-8">{{ $record->name }}</p>
+        <p class="text-xl font-bold my-8">{{ $record->id }}</p>
         <section>
             <form method="POST" enctype="multipart/form-data" action="{{ route('getEncodings') }}" id="imageForm">
                 @csrf
@@ -42,6 +43,10 @@
                 <hr>
                 <x-filament::button type="submit" class="px-8 my-4" id="submitBtn">Save Image</x-filament::button>
             </form>
+
+            <div class="p-8">
+                <p class="text-xl font-bold p-4 text-black bg-white" id="res"></p>
+            </div>
         </section>
     </main>
 
@@ -81,16 +86,8 @@
         // Video constraints
         const constraints = {
             video: {
-                width: {
-                    min: 800,
-                    ideal: 1280,
-                    max: 1920
-                },
-                height: {
-                    min: 480,
-                    ideal: 720,
-                    max: 1080
-                },
+                width: 1280,
+                height: 720
             },
         };
 
@@ -114,8 +111,8 @@
                         canvas.setAttribute("width", width);
                         canvas.setAttribute("height", height);
 
-                        guidingBox.style.height = (height - 20) + "px";
-                        guidingBox.style.width = (height - 20) + "px";
+                        guidingBox.style.height = (height) + "px";
+                        guidingBox.style.width = (height) + "px";
                     };
                 })
                 .catch((err) => {
@@ -233,27 +230,30 @@
 
         document.getElementById('imageForm').addEventListener('submit', (event) => {
             event.preventDefault();
-            const student_id = document.querySelector("#s_id");
+            const student_id = document.querySelector("#s_id").value;
             const formData = new FormData();
             formData.append('image', inputImage.files[0]);
-            formData.append('student_id', student_id.value);
+            formData.append('student_id', student_id);
 
-            fetch('/api/facial-recognition', {
+            fetch('/get-encodings', {
                     method: 'POST',
-                    body: formData
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.getElementsByName('_token')[0].value
+                    },
                 })
                 .then(response => response.json())
                 .then(data => {
+                    document.querySelector("#res").innerHTML = data.message;
                     if (data.success) {
                         alert('Facial recognition successful!');
-                        // You can update the UI or perform other actions here
                     } else {
-                        alert('Facial recognition failed: ' + data.message);
+                        alert(data.message);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('An error occurred during facial recognition.');
+                    alert(`An error occurred during facial recognition: ${error}`);
                 });
         });
     </script>

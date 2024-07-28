@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('recognitions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
-            $table->binary('face_encoding');
+            $table->longText('face_encoding');
             $table->decimal('confidence_score', 5, 2)->nullable();
             $table->timestamps();
         });
