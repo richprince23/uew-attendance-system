@@ -7,6 +7,7 @@ use App\Filament\Resources\LecturerResource\RelationManagers;
 use App\Filament\Resources\LecturerResource\RelationManagers\DepartmentRelationManager;
 use App\Models\Department;
 use App\Models\Lecturer;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -19,6 +20,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
 
 class LecturerResource extends Resource
@@ -83,4 +86,16 @@ class LecturerResource extends Resource
             'edit' => Pages\EditLecturer::route('/{record}/edit'),
         ];
     }
+
+    // public static function afterCreate(Lecturer $lecturer): void
+    // {
+    //     $password = Str::random(10);
+
+    //     $user = User::create([
+    //         'name' => $lecturer->name,
+    //         'email' => $lecturer->email,
+    //         'password' => Hash::make($password),
+    //         'role' => 'lecturer', // Assuming you have a role field
+    //     ]);
+    // }
 }

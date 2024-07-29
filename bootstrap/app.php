@@ -13,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
+        // $middleware->append([ 'lecturer' => \App\Http\Middleware\IsLecturer::class,
+
+    // ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -52,14 +52,29 @@ class User extends Authenticatable implements FilamentUser
      * @param Panel $panel
      * @return bool
      */
-    public function canAccessPanel(Panel $panel): bool {
-        // if ($this->role == 'admin' && $panel->path('/admin')){
-
-        //     return true;
-        // }
-
-        // return false;
-        // return str_ends_with($this->role, 'admin');
+    public function canAccessPanel(Panel $panel): bool
+{
+    if ($this->role == 'admin' && $panel->getId() == 'admin') {
         return true;
+    }
+
+    if ($this->role == 'lecturer' && $panel->getId() == 'lecturer') {
+        return true;
+    }
+
+    return false;
+}
+
+    public function lecturedCourses()
+    {
+        return $this->hasMany(Course::class, 'lecturer_id');
+    }
+
+    public function lecturer()
+    {
+        return $this->hasOne(Lecturer::class);
+    }
+    public function role(){
+        return $this->role;
     }
 }

@@ -16,6 +16,23 @@ class Lecturer extends Model
         'phone',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($lecturer) {
+            User::create([
+                'name' => $lecturer->name,
+                'email' => $lecturer->email,
+                'password' => bcrypt('defaultpassword'), // Set a default password, or generate a random one
+                'role' => 'lecturer', // Set the role to lecturer
+            ]);
+        });
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
     public function schedules()
     {
         return $this->hasMany(Schedules::class);

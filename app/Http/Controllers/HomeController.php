@@ -28,6 +28,14 @@ class HomeController extends Controller
 
     public function dashboard()
     {
+        // if (auth()->user()->role == 'admin') {
+        //     return view('admin.dashboard');
+        // } else if (auth()->user()->role == 'lecturer') {
+        //     return view('app.Filament.Lecturer.Pages.Dashboard');
+        // } else {
+        //     return view('student.dashboard');
+        // }
+
         if (auth()->user()->hasRole('admin')) {
             return view('admin.dashboard');
         } else if (auth()->user()->hasRole('lecturer')) {

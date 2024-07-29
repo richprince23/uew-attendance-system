@@ -59,4 +59,9 @@ class Course extends Model
             });
         });
     }
+
+    public function scopeForLecturer($query, $lecturerId)
+    {
+        return $query->where('lecturer_id', $lecturerId);
+    }
 }
