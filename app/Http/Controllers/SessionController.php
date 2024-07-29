@@ -71,7 +71,7 @@ class SessionController extends Controller
                 // get the student details
                 $student_id = $data['student_id'];
                 $student = Student::find($student_id);
-
+                //TODO: implement attendance logiv here
                 //    mark attendance here
                 // $attendance = new Attendance();
                 // $attendance->student_id = $sid;
