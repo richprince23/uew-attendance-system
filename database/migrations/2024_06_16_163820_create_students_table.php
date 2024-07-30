@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('level');
             $table->string('gender');
             $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('group')->nullable();
             $table->string('email', 100)->unique();
             $table->string('phone', 20)->nullable();

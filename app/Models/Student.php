@@ -19,7 +19,25 @@ class Student extends Model
         'group',
         'gender',
         'department_id',
+        'user_id'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($student) {
+            $user = User::create([
+                'name' => $student->name,
+                'email' => $student->email,
+                'password' => bcrypt('defaultpassword'), // Set a default password, or generate a random one
+                'role' => 'lecturer', // Set the role to lecturer
+            ]);
+
+            $student->user_id = $user->id;
+        });
+    }
+
 
     public function department()
     {
