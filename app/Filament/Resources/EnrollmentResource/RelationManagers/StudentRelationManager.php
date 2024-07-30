@@ -30,8 +30,7 @@ class StudentRelationManager extends RelationManager
             ->recordTitleAttribute('surname')
             ->columns([
                 Tables\Columns\TextColumn::make('index_number'),
-                Tables\Columns\TextColumn::make('other_names'),
-                Tables\Columns\TextColumn::make('surname'),
+                Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('level'),
                 Tables\Columns\TextColumn::make('group'),
                 Tables\Columns\TextColumn::make('department.name'),

@@ -11,8 +11,7 @@ class Student extends Model
 
     protected $fillable = [
         'index_number',
-        'other_names',
-        'surname',
+        'name',
         'email',
         'phone',
         'level',
@@ -31,7 +30,7 @@ class Student extends Model
                 'name' => $student->name,
                 'email' => $student->email,
                 'password' => bcrypt('defaultpassword'), // Set a default password, or generate a random one
-                'role' => 'lecturer', // Set the role to lecturer
+                'role' => 'student', // Set the role to lecturer
             ]);
 
             $student->user_id = $user->id;
@@ -54,9 +53,9 @@ class Student extends Model
         return $this->belongsTo(Enrollment::class);
     }
 
-    public function getNameAttribute(){
-        return $this->other_names. ' '. $this->surname;
-    }
+    // public function getNameAttribute(){
+    //     return $this->name;
+    // }
 
     public function name(){
         return $this->getNameAttribute();
@@ -85,8 +84,7 @@ class Student extends Model
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
                 $query->where('index_number', 'like', '%'.$search.'%')
-                    ->orWhere('other_names', 'like', '%'.$search.'%')
-                    ->orWhere('surname', 'like', '%'.$search.'%')
+                    ->orWhere('name', 'like', '%'.$search.'%')
                     ->orWhere('email', 'like', '%'.$search.'%')
                     ->orWhere('phone', 'like', '%'.$search.'%')
                     ->orWhere('level', 'like', '%'.$search.'%')

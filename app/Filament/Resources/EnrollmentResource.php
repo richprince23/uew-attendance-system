@@ -36,19 +36,13 @@ class EnrollmentResource extends Resource
     public function getStateUsing(Model $record): array
     {
         return [
-            'student_name' => $record->other_names . '  ' . $record->surname,
+            'student_name' =>  $record->name,
         ];
     }
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('student.other_names')->label('Other Names')
-                //     ->sortable()
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('student.surname')->label('Surname')
-                //     ->sortable()
-                //     ->searchable(),
                 Tables\Columns\TextColumn::make('student.name')->label('Name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('course.course_name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('year')->sortable()->searchable(),

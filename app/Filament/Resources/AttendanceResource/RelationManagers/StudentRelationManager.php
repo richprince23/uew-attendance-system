@@ -15,7 +15,7 @@ class StudentRelationManager extends RelationManager
 {
     protected static string $relationship = 'student';
 
-    
+
 
     public function form(Form $form): Form
     {
@@ -24,8 +24,7 @@ class StudentRelationManager extends RelationManager
                 Forms\Components\TextInput::make('id')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('other_names'),
-                Forms\Components\TextInput::make('surname'),
+                Forms\Components\TextInput::make('name'),
             ]);
     }
 

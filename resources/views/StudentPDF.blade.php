@@ -15,7 +15,7 @@
     <tbody>
         @foreach($records as $record)
             <tr>
-                <td>{{ $record->other_names.' '. $record->surname}} </td>
+                <td>{{ $record->name}} </td>
                 <td>{{ $record->index_number }}</td>
                 {{-- <td>{{ $record->group }}</td> --}}
                 <td>{{ $record->level }}</td>

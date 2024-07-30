@@ -97,7 +97,7 @@
                         if (data.status === 'success') {
                             console.log(`Recognized face: ${data.student.index_number}`);
                             studentId.innerText = data.student.index_number;
-                            student_details.innerText = `${data.student.other_names} ${data.student['surname']}`;
+                            student_details.innerText = `${data.student.name}`;
                             alert('attendance taken!')
                         } else {
                             studentId.innerText = "No match found";

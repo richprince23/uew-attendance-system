@@ -33,9 +33,7 @@ class AttendanceRelationManager extends RelationManager
             ->recordTitleAttribute('schedules_id')
             ->columns([
                 Tables\Columns\TextColumn::make('schedules_id')->hidden(),
-                Tables\Columns\TextColumn::make('student.name'),
-                Tables\Columns\TextColumn::make('student.surname')->hidden()->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('student.other_names')->hidden()->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('student.name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('student.index_number')->sortable()->searchable()->label('Index Number'),
                 Tables\Columns\TextColumn::make('student_id')->summarize(Count::make())->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('date')->sortable()->searchable(),

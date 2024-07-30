@@ -40,8 +40,8 @@ class StudentResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('other_names')->required()->rules('string')->maxLength(50),
-                TextInput::make('surname')->required()->rules('string')->maxLength(50),
+
+                TextInput::make('name')->required()->rules('string')->maxLength(80),
                 TextInput::make('email')->required()->rules('email')->maxLength(50),
                 TextInput::make('phone')->required()->rules('numeric|min_digits:10|max_digits:10'),
                 TextInput::make('index_number')->required()->rules('numeric|min_digits:9|max_digits:12'),
@@ -78,9 +78,7 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('other_names')->hidden()->searchable()->sortable(),
-                TextColumn::make('surname')->hidden()->searchable()->sortable(),
-                TextColumn::make('name'),
+                TextColumn::make('name')->searchable()->sortable(),
                 TextColumn::make('index_number')->searchable()->sortable(),
                 TextColumn::make('level')->searchable()->sortable(),
                 // TextColumn::make('email')->searchable()->sortable(),
