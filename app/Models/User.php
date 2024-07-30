@@ -72,9 +72,10 @@ class User extends Authenticatable implements FilamentUser
 
     public function lecturer()
     {
-        return $this->hasOne(Lecturer::class);
+        return $this->belongsTo(Lecturer::class);
     }
     public function role(){
         return $this->role;
     }
+
 }

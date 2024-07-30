@@ -34,7 +34,7 @@ class CourseRelationManager extends RelationManager
                     '400' =>'100',
                 ]),
                 TextInput::make('year')->required()->maxLength(255),
-                Select::make('lecturer_id')->relationship('lecturer', 'name')->searchable()
+                Select::make('lecturer_id')->relationship('lecturer', 'name')->searchable()->reactive()
 
             ]);
     }

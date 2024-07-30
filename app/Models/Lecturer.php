@@ -14,24 +14,28 @@ class Lecturer extends Model
         'email',
         'department_id',
         'phone',
+        'user_id'
     ];
 
     protected static function boot()
     {
         parent::boot();
 
-        static::created(function ($lecturer) {
-            User::create([
+        static::creating(function ($lecturer) {
+            $user = User::create([
                 'name' => $lecturer->name,
                 'email' => $lecturer->email,
                 'password' => bcrypt('defaultpassword'), // Set a default password, or generate a random one
                 'role' => 'lecturer', // Set the role to lecturer
             ]);
+
+            $lecturer->user_id = $user->id;
         });
     }
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function user()
+    {
+        return $this->hasOne(User::class);
     }
     public function schedules()
     {
@@ -52,10 +56,10 @@ class Lecturer extends Model
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('name', 'like', '%'.$search.'%')
-                    ->orWhere('email', 'like', '%'.$search.'%')
-                    ->orWhere('phone', 'like', '%'.$search.'%')
-                    ->orWhere('address', 'like', '%'.$search.'%');
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhere('phone', 'like', '%' . $search . '%')
+                    ->orWhere('address', 'like', '%' . $search . '%');
             });
         });
     }

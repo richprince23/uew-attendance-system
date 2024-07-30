@@ -60,7 +60,7 @@ class Course extends Model
         });
     }
 
-    public function scopeForLecturer($query, $lecturerId)
+    public function scopeByLecturer($query, $lecturerId)
     {
         return $query->where('lecturer_id', $lecturerId);
     }

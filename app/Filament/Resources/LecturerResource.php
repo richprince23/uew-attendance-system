@@ -44,7 +44,6 @@ class LecturerResource extends Resource
                 //     // ->afterStateUpdated(function (Livewire $livewire) {
                 //     //     $livewire->reset('data.department.id');
                 //     // }),
-
                 Select::make('department_id')->label('Select Department')->relationship('department', 'name')->searchable(),
 
             ]);

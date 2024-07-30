@@ -4,8 +4,11 @@ namespace App\Filament\Lecturer\Resources;
 
 use App\Filament\Lecturer\Resources\CourseResource\Pages;
 use App\Filament\Lecturer\Resources\CourseResource\RelationManagers;
+use App\Filament\Lecturer\Resources\CourseResource\RelationManagers\EnrollmentRelationManager;
 use App\Models\Course;
 use App\Models\Lecturer;
+use App\Models\User;
+use Auth;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -25,7 +28,7 @@ class CourseResource extends Resource
     {
         return $form
             ->schema([
-                //
+
             ]);
     }
 
@@ -43,9 +46,9 @@ class CourseResource extends Resource
             ->filters([
                 //
             ])
-            // ->query( fn ($query) => $query->byLecturer(request()->input('lecturer_id')))
+            // ->query( fn ($query) => $query->byLecturer(Auth::user()->id))
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -56,14 +59,15 @@ class CourseResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
+        $lecturerId = Lecturer::where('user_id', auth()->user()->id)->get()->first(); // get lecturer id from user
         return parent::getEloquentQuery()
-            ->where('lecturer_id', auth()->id());
+            ->where('lecturer_id', '=', $lecturerId);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            EnrollmentRelationManager::class
         ];
     }
 
@@ -72,7 +76,7 @@ class CourseResource extends Resource
         return [
             'index' => Pages\ListCourses::route('/'),
             'create' => Pages\CreateCourse::route('/create'),
-            'edit' => Pages\EditCourse::route('/{record}/edit'),
+            // 'edit' => Pages\EditCourse::route('/{record}/edit'),
         ];
     }
 }
