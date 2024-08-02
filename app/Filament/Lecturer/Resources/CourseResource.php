@@ -59,9 +59,10 @@ class CourseResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $lecturerId = Lecturer::where('user_id', auth()->user()->id)->get()->first(); // get lecturer id from user
+        $lecturer= Lecturer::where('user_id', auth()->user()->id)->get()->first(); // get lecturer id from user
+        // var_dump($lecturer->id);
         return parent::getEloquentQuery()
-            ->where('lecturer_id', '=', $lecturerId);
+            ->where('lecturer_id', '=', $lecturer->id);
     }
 
     public static function getRelations(): array
