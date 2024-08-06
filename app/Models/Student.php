@@ -35,6 +35,8 @@ class Student extends Model
 
             $student->user_id = $user->id;
         });
+
+
     }
 
 
