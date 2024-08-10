@@ -6,11 +6,13 @@ use App\Models\Course;
 use App\Models\Department;
 use App\Models\Lecturer;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -25,10 +27,10 @@ class EnrollmentRelationManager extends RelationManager
     {
         return $form
             ->schema([
-               TextInput::make('course_id')->required()->maxLength(12),
-               TextInput::make('student_id')->required()->maxLength(12),
-               TextInput::make('year')->required(),
-               TextInput::make('semester')->required()->maxLength(12),
+               Select::make('course_id')->relationship('course', 'course_name')->searchable()->required(),
+               Select::make('student_id')->relationship('student', 'name')->searchable()->required(),
+               TextInput::make('year')->required()->numeric()->maxLength(4),
+               Select::make('semester')->relationship('student', 'name')->searchable()->required(),
             ]);
     }
 

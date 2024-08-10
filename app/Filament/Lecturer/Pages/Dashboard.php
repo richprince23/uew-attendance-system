@@ -16,6 +16,8 @@ class Dashboard extends \Filament\Pages\Dashboard
             ->id('lecturer')
             ->path('lecturer')
             ->login()
+            // ->passwordReset()
+            // ->profile(isSimple: false)
             ->colors([
                 'primary' => Color::Blue,
             ])
