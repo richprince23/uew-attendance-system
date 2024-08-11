@@ -2,9 +2,9 @@
 
 namespace App\Filament\Lecturer\Resources;
 
-use App\Filament\Lecturer\Resources\StudentResource\Pages;
-use App\Filament\Lecturer\Resources\StudentResource\RelationManagers;
-use App\Models\Student;
+use App\Filament\Lecturer\Resources\ScheduleResource\Pages;
+use App\Filament\Lecturer\Resources\ScheduleResource\RelationManagers;
+use App\Models\Schedule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class StudentResource extends Resource
+class ScheduleResource extends Resource
 {
-    protected static ?string $model = Student::class;
+    protected static ?string $model = Schedule::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -56,9 +56,9 @@ class StudentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListStudents::route('/'),
-            'create' => Pages\CreateStudent::route('/create'),
-            'edit' => Pages\EditStudent::route('/{record}/edit'),
+            'index' => Pages\ListSchedules::route('/'),
+            'create' => Pages\CreateSchedule::route('/create'),
+            'edit' => Pages\EditSchedule::route('/{record}/edit'),
         ];
     }
 }

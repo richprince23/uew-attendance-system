@@ -12,7 +12,7 @@ class Profile extends Page
 
     protected static string $view = 'filament.lecturer.pages.app.profile';
 
-    protected static bool $shouldRegisterNavigation = false;
+    protected static bool $shouldRegisterNavigation = true;
 
     protected static ?string $title = 'Update Profile';
 
