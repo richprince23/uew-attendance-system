@@ -31,7 +31,10 @@ class EnrollmentRelationManager extends RelationManager
             ->recordTitleAttribute('student_id')
             ->columns([
                 Tables\Columns\TextColumn::make('course.course_name'),
-                // Tables\Columns\TextColumn::make('course_id')->label('Course')->,
+                Tables\Columns\TextColumn::make('course.course_code'),
+                Tables\Columns\TextColumn::make('course.year')->label('Year'),
+                Tables\Columns\TextColumn::make('course.semester')->label('Semester'),
+                Tables\Columns\TextColumn::make('course.lecturer.name'),
             ])
             ->filters([
                 //
@@ -40,7 +43,7 @@ class EnrollmentRelationManager extends RelationManager
                 // Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

@@ -99,7 +99,7 @@ class StudentResource extends Resource
             ->actions([
                 // Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('image')->url(fn ($record) => StudentResource::getUrl('image', ['record' => $record]))
-                ->label('Images')
+                ->label('Add Face')
                 ->icon('heroicon-o-face-smile'),
                     Tables\Actions\EditAction::make(),
 

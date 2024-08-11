@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\StudentResource\Pages;
 
+use App\Filament\Imports\StudentImporter;
 use App\Filament\Resources\StudentResource;
 use Filament\Actions;
+use Filament\Actions\ImportAction;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,6 +18,8 @@ class ListStudents extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            ImportAction::make()
+                ->importer(StudentImporter::class)
         ];
     }
 

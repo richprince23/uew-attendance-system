@@ -54,6 +54,10 @@ class Student extends Model
     {
         return $this->hasMany(Enrollment::class);
     }
+    public function enrollment()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
 
     // public function getNameAttribute(){
     //     return $this->name;
