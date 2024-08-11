@@ -8,6 +8,7 @@ use App\Models\Lecturer;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -37,9 +38,9 @@ class StudentResource extends Resource
                 TextColumn::make('index_number'),
                 TextColumn::make('level'),
                 TextColumn::make('department.name')->label('Department'),
+                // TextColumn::make('enrollments.course.course_name')->label('Course'), // works
             ])
             ->filters([
-                //
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),

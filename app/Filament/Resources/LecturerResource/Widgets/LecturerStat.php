@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\LecturerResource\Widgets;
 
+use App\Models\Student;
+use Filament\Forms\Components\Builder;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -13,7 +15,6 @@ class LecturerStat extends BaseWidget
     {
         return $table
             ->query(
-                // ...
             )
             ->columns([
                 TextColumn::make('name')
