@@ -35,10 +35,10 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('index_number'),
-                TextColumn::make('level'),
-                TextColumn::make('department.name')->label('Department'),
+                TextColumn::make('name')->searchable(),
+                TextColumn::make('index_number')->searchable(),
+                TextColumn::make('level')->sortable(),
+                TextColumn::make('department.name')->label('Department')->searchable(),
                 // TextColumn::make('enrollments.course.course_name')->label('Course'), // works
             ])
             ->filters([

@@ -24,7 +24,7 @@ class ListStudents extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            StudentOverview::class, // Register the widget here
+            // StudentOverview::class, // Register the widget here
             // Other widgets can be added here
         ];
     }
