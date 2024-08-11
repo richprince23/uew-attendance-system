@@ -50,9 +50,9 @@ class Student extends Model
     //     return $this->hasMany(Enrollment::class);
     // }
 
-    public function enrollment()
+    public function enrollments()
     {
-        return $this->belongsTo(Enrollment::class);
+        return $this->hasMany(Enrollment::class);
     }
 
     // public function getNameAttribute(){

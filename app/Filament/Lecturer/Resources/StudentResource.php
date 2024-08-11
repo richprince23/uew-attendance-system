@@ -4,11 +4,13 @@ namespace App\Filament\Lecturer\Resources;
 
 use App\Filament\Lecturer\Resources\StudentResource\Pages;
 use App\Filament\Lecturer\Resources\StudentResource\RelationManagers;
+use App\Models\Lecturer;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -31,13 +33,16 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name'),
+                TextColumn::make('index_number'),
+                TextColumn::make('level'),
+                TextColumn::make('department.name')->label('Department'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -58,7 +63,19 @@ class StudentResource extends Resource
         return [
             'index' => Pages\ListStudents::route('/'),
             'create' => Pages\CreateStudent::route('/create'),
-            'edit' => Pages\EditStudent::route('/{record}/edit'),
+            // 'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
+    }
+
+    // students only taking a lecturer's course
+    public static function getEloquentQuery(): Builder
+    {
+        $lecturer = Lecturer::where('user_id', auth()->id())->first();
+
+        return Student::query()
+            ->whereHas('enrollments.course', function (Builder $query) use ($lecturer) {
+                $query->where('lecturer_id', $lecturer->id);
+            })
+            ->distinct();
     }
 }
