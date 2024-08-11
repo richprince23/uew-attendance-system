@@ -3,10 +3,12 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Auth\LecturerLogin;
+use App\Filament\Lecturer\Pages\App\Profile;
 use App\Http\Middleware\IsLecturer;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -31,6 +33,8 @@ class LecturerPanelProvider extends PanelProvider
                 'primary' => Color::Blue,
             ])
             ->login(LecturerLogin::class)
+             ->passwordReset()
+            ->profile(isSimple: false)
             ->discoverResources(in: app_path('Filament/Lecturer/Resources'), for: 'App\\Filament\\Lecturer\\Resources')
             ->discoverPages(in: app_path('Filament/Lecturer/Pages'), for: 'App\\Filament\\Lecturer\\Pages')
             ->pages([
@@ -56,6 +60,12 @@ class LecturerPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->userMenuItems([
+                'profile' => MenuItem::make()
+                    ->label('Profile')
+                    ->icon('heroicon-o-user-circle')
+                    ->url(static fn (): string => route(Profile::getRouteName(panel: 'lecturer'))),
             ]);
     }
 }
