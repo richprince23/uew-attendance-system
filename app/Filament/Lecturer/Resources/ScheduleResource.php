@@ -76,11 +76,11 @@ class ScheduleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('course.course_name'),
-                TextColumn::make('course.course_code'),
-                TextColumn::make('course.level'),
-                TextColumn::make('course.semester'),
-                TextColumn::make('day'),
+                TextColumn::make('course.course_name')->searchable(),
+                TextColumn::make('course.course_code')->searchable(),
+                TextColumn::make('course.level')->sortable(),
+                TextColumn::make('course.semester')->sortable(),
+                TextColumn::make('day')->sortable(),
             ])
             ->filters([
                 //
