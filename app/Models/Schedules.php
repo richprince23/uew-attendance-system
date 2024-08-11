@@ -13,7 +13,7 @@ class Schedules extends Model
         'course_id',
         'venue',
         'room_number',
-        'day_of_week',
+        'day',
         'lecturer_id',
         'start_time',
         'end_time',
