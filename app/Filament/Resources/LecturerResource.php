@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Lecturer\Widgets\EnrollmentOverview;
+use App\Filament\Lecturer\Widgets\StudentOverview;
 use App\Filament\Resources\LecturerResource\Pages;
 use App\Filament\Resources\LecturerResource\RelationManagers;
 use App\Filament\Resources\LecturerResource\RelationManagers\DepartmentRelationManager;
@@ -97,4 +99,11 @@ class LecturerResource extends Resource
     //         'role' => 'lecturer', // Assuming you have a role field
     //     ]);
     // }
+
+    public static function getWidgets(): array{
+        return [
+            EnrollmentOverview::class,
+            StudentOverview::class
+        ];
+    }
 }

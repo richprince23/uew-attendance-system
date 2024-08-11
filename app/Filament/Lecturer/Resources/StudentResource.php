@@ -4,6 +4,7 @@ namespace App\Filament\Lecturer\Resources;
 
 use App\Filament\Lecturer\Resources\StudentResource\Pages;
 use App\Filament\Lecturer\Resources\StudentResource\RelationManagers;
+use App\Filament\Lecturer\Widgets\StudentOverview;
 use App\Models\Lecturer;
 use App\Models\Student;
 use Filament\Forms;
@@ -78,5 +79,13 @@ class StudentResource extends Resource
                 $query->where('lecturer_id', $lecturer->id);
             })
             ->distinct();
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            StudentOverview::class, // Register the widget here
+            // Other widgets can be added here
+        ];
     }
 }

@@ -18,7 +18,7 @@ class StudentOverview extends BaseWidget
             Stat::make('Total Level 400s', Student::query()->where('level', '400')->count()),
             Stat::make('Total Students', Student::query()->count()),
 
-            Stat::make('Total Faculties', Faculty::query()->count())
+            // Stat::make('Total Faculties', Faculty::query()->count())
         ];
     }
 }
