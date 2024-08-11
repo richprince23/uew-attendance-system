@@ -31,7 +31,6 @@ class DepartmentResource extends Resource
                 TextInput::make('hod')->rules('string')->required(),
                 Select::make('faculty_id')->label('Select Faculty')->relationship('faculty', 'name')
 
-
             ]);
     }
 
@@ -39,6 +38,7 @@ class DepartmentResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
                     Tables\Columns\TextColumn::make('faculty.name')->sortable()->searchable()->label('Faculty'),
                 Tables\Columns\TextColumn::make('code')->sortable()->searchable(),
