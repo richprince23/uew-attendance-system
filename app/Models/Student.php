@@ -26,14 +26,20 @@ class Student extends Model
         parent::boot();
 
         static::creating(function ($student) {
-            $user = User::create([
-                'name' => $student->name,
-                'email' => $student->email,
-                'password' => bcrypt('defaultpassword'), // Set a default password, or generate a random one
-                'role' => 'student', // Set the role to lecturer
-            ]);
 
-            $student->user_id = $user->id;
+            $check = User::where('email', $student->email)->first();
+
+            if ($check == null) {
+                $user = User::create([
+                    'name' => $student->name,
+                    'email' => $student->email,
+                    'password' => bcrypt('defaultpassword'), // Set a default password, or generate a random one
+                    'role' => 'student', // Set the role to lecturer
+                ]);
+
+                $student->user_id = $user->id;
+                // $student->save();
+            }
         });
 
 

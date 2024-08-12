@@ -2,12 +2,15 @@
 
 namespace App\Filament\Imports;
 
+use App\Models\Department;
 use App\Models\Student;
 use App\Models\User;
 use Artisan;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
+use Filament\Notifications\Notification;
+use Log;
 
 class StudentImporter extends Importer
 {
@@ -34,10 +37,10 @@ class StudentImporter extends Importer
                 ->requiredMapping()
                 ->label('Department Name')
                 ->rules(['required', 'string', 'max:255']),
-            ImportColumn::make('user_id')
-                ->requiredMapping()
-                ->numeric()->relationship(resolveUsing: 'email')
-                ->rules(['required', 'integer']),
+            // ImportColumn::make('user_id')
+            //     ->requiredMapping()
+            //     ->numeric()->relationship(resolveUsing: 'email')
+            //     ->rules(['required', 'integer']),
             ImportColumn::make('group')
                 ->rules(['max:255']),
             ImportColumn::make('email')
@@ -56,19 +59,7 @@ class StudentImporter extends Importer
                 'index_number' => $this->data['index_number'],
             ]);
 
-            // Find the user by email
-            $user = User::where('email', $this->data['email'])->first();
-            if (!$user) {
-                Log::warning("User not found for email: {$this->data['email']}");
-                return null;
-            }
-
-            // Find the department by name (assuming 'department' is the name field)
-            $department = Department::where('name', $this->data['department_id'])->first();
-            if (!$department) {
-                Log::warning("Department not found: {$this->data['department_id']}");
-                return null;
-            }
+         
 
             // Fill student data
             $student->fill([
@@ -76,9 +67,11 @@ class StudentImporter extends Importer
                 'index_number' => $this->data['index_number'],
                 'level' => $this->data['level'],
                 'gender' => $this->data['gender'],
-                'department_id' => $department->id,
-                'user_id' => $user->id,
-                'group' => $this->data['group'] ?? null,
+                'department_id' => $this->data['department_id'],
+                //logic is, when students are created, it automatically create a user account, and updates the student's user_id field, so user_id is not required
+                // this is done in the creating boot medthod in the student model
+                // 'user_id' => $user->id,
+                'group' => $this->data['group'] ?? 'Group 1',
                 'email' => $this->data['email'],
                 'phone' => $this->data['phone'] ?? null,
             ]);
@@ -86,7 +79,7 @@ class StudentImporter extends Importer
             $student->save();
 
             Log::info("Student imported successfully: {$student->name}");
-
+            Notification::make("Imported student records")->title('Import Successfull')->success()->send();
             return $student;
         } catch (\Exception $e) {
             Log::error("Error importing student: " . $e->getMessage());

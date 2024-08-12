@@ -16,10 +16,10 @@ class ListUsers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            ImportAction::make()
-                ->importer(UserImporter::class)->options([
-                    'updateExisting' => true,
-                ]),
+            // ImportAction::make()
+            //     ->importer(UserImporter::class)->options([
+            //         'updateExisting' => true,
+            //     ]),
             Actions\CreateAction::make(),
         ];
     }
