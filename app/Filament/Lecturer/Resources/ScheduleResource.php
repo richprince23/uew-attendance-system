@@ -16,6 +16,9 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,39 +32,39 @@ class ScheduleResource extends Resource
 
     public static function form(Form $form): Form
     {
-         $lecturer = Lecturer::where('user_id', auth()->user()->id)->get()->first();
+        $lecturer = Lecturer::where('user_id', auth()->user()->id)->get()->first();
         return $form
             ->schema([
-                Select::make('course_id')->placeholder('Select a course')
-                ->label('Course')
-                ->options(function () {
-                    $lecturer = Lecturer::where('user_id', auth()->id())->first();
+                // Select::make('course_id')->placeholder('Select a course')
+                //     ->label('Course')
+                //     ->options(function () {
+                //         $lecturer = Lecturer::where('user_id', auth()->id())->first();
 
-                    if (!$lecturer) {
-                        return [];
-                    }
+                //         if (!$lecturer) {
+                //             return [];
+                //         }
 
-                    return Course::where('lecturer_id', $lecturer->id)
-                        ->pluck('course_name', 'id')
-                        ->toArray();
-                })
-                ->searchable()
-                ->required(),
+                //         return Course::where('lecturer_id', $lecturer->id)
+                //             ->pluck('course_name', 'id')
+                //             ->toArray();
+                //     })
+                //     ->searchable()
+                //     ->required(),
 
-                TextInput::make('lecturer_id')->default($lecturer->id)->hidden()->dehydrated(),
-                TextInput::make('venue')->required(),
-                TextInput::make('room'),
-                Select::make('day')->options([
-                    'Monday' =>'Monday',
-                    'Tuesday'=>'Tuesday',
-                    'Wednesday'=>'Wednesday',
-                    'Thursday'=>'Thursday',
-                    'Friday'=>'Friday',
-                    'Saturday'=>'Saturday',
-                    'Sunday'=>'Sunday'
-                ]),
-                TimePicker::make('start_time')->required(),
-                TimePicker::make('end_time')->required(),
+                // TextInput::make('lecturer_id')->default($lecturer->id)->hidden()->dehydrated(),
+                // TextInput::make('venue')->required(),
+                // TextInput::make('room'),
+                // Select::make('day')->options([
+                //     'Monday' => 'Monday',
+                //     'Tuesday' => 'Tuesday',
+                //     'Wednesday' => 'Wednesday',
+                //     'Thursday' => 'Thursday',
+                //     'Friday' => 'Friday',
+                //     'Saturday' => 'Saturday',
+                //     'Sunday' => 'Sunday'
+                // ]),
+                // TimePicker::make('start_time')->required(),
+                // TimePicker::make('end_time')->required(),
 
                 // TextInput::make('lecturer_id')
                 // ->default(function() {
@@ -87,7 +90,8 @@ class ScheduleResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ViewAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
