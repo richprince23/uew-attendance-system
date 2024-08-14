@@ -113,6 +113,7 @@ class ScheduleResource extends Resource
             'index' => Pages\ListSchedules::route('/'),
             'create' => Pages\CreateSchedule::route('/create'),
             'edit' => Pages\EditSchedule::route('/{record}/edit'),
+            'start-session' => Pages\Session::route('/start-session')
         ];
     }
 }
