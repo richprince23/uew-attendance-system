@@ -42,7 +42,7 @@ class StudentResource extends Resource
             ->schema([
 
                 TextInput::make('name')->required()->rules('string')->maxLength(80),
-                TextInput::make('email')->required()->rules('email')->maxLength(50),
+                TextInput::make('email')->required()->rules('email')->maxLength(50)->readOnlyOn('edit'),
                 TextInput::make('phone')->required()->rules('numeric|min_digits:10|max_digits:10'),
                 TextInput::make('index_number')->required()->rules('numeric|min_digits:9|max_digits:12'),
                 Select::make('gender')->required()->options([
