@@ -44,8 +44,8 @@ class LecturerPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Lecturer/Widgets'), for: 'App\\Filament\\Lecturer\\Widgets')
             ->widgets([
                 // Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
-                EnrollmentOverview::class,
+                // Widgets\FilamentInfoWidget::class,
+                // EnrollmentOverview::class,
             ])
             // ->authGuard('lecturer')
             ->middleware([

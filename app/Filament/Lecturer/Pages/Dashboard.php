@@ -2,6 +2,7 @@
 
 namespace App\Filament\Lecturer\Pages;
 
+use App\Filament\Lecturer\Widgets\AttendanceTrend;
 use App\Filament\Lecturer\Widgets\EnrollmentOverview;
 use Filament\Panel;
 use Filament\Support\Colors\Color;
@@ -24,9 +25,10 @@ class Dashboard extends \Filament\Pages\Dashboard
             ])
             ->discoverResources(in: app_path('Filament/Lecturer/Resources'), for: 'App\\Filament\\Lecturer\\Resources')
             ->discoverPages(in: app_path('Filament/Lecturer/Pages'), for: 'App\\Filament\\Lecturer\\Pages')
-            ->discoverWidgets()
+            // ->discoverWidgets()
             ->widgets([
-                EnrollmentOverview::class,
+                AttendanceTrend::class,
+                // EnrollmentOverview::class,
             ])
             ->pages([
                 Dashboard::class,
