@@ -15,8 +15,12 @@ Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'dashboard
 
 Route::post('/get-encodings', [App\Http\Controllers\StudentController::class, 'getEncodings'])->name('getEncodings');
 
+// Configure schedule session
+// Route::get('/')
+
 // Start live attendance session
 Route::get('/session', [SessionController::class, 'start_session'])->name('start-session');
+// Route::get('/session', [SessionController::class, 'start_session'])->name('start-session');
 
 // Recognize from backend
 Route::post('/recognize', [SessionController::class, 'recognize'])->name('recognize');

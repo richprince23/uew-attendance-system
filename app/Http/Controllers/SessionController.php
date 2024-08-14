@@ -36,6 +36,7 @@ class SessionController extends Controller
 
 
         return view('take-attendance', compact(['course_name', 'venue', 'course_code', 'end_time']));
+        // return view('filament.lecturer.resources.schedule-resource.pages.session', compact(['course_name', 'venue', 'course_code', 'end_time']));
     }
 
     public function recognize(Request $request)

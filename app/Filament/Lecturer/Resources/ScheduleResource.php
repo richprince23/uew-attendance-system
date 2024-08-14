@@ -3,6 +3,7 @@
 namespace App\Filament\Lecturer\Resources;
 
 use App\Filament\Lecturer\Resources\ScheduleResource\Pages;
+use App\Filament\Lecturer\Resources\ScheduleResource\Pages\Session;
 use App\Filament\Lecturer\Resources\ScheduleResource\RelationManagers;
 
 use App\Filament\Lecturer\Resources\ScheduleResource\RelationManagers\AttendanceRelationManager;
@@ -16,6 +17,7 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
@@ -90,8 +92,10 @@ class ScheduleResource extends Resource
                 //
             ])
             ->actions([
-                ViewAction::make(),
                 EditAction::make(),
+                Action::make('Start Session')
+                ->url(fn (Schedules $record) => Session::getUrl(['record' => $record->id]))
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -113,7 +117,7 @@ class ScheduleResource extends Resource
             'index' => Pages\ListSchedules::route('/'),
             'create' => Pages\CreateSchedule::route('/create'),
             'edit' => Pages\EditSchedule::route('/{record}/edit'),
-            'start-session' => Pages\Session::route('/start-session')
+            'new-session' => Pages\Session::route('/{record}/new-session')
         ];
     }
 }
