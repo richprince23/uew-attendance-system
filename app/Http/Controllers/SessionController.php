@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SessionController extends Controller
 {
@@ -29,7 +30,7 @@ class SessionController extends Controller
         $course_name = "Hello";
         $course_code = "";
         $venue = "";
-
+        $schedule_id = 1;
         $start_time = Carbon::now("UTC");
         $end_time = Carbon::now("UTC")->addMinutes(30);
 
@@ -71,16 +72,35 @@ class SessionController extends Controller
                 // get the student details
                 $student_id = $data['student_id'];
                 $student = Student::find($student_id);
+
+                Log::info($student_id);
+
+                $attendanceToday = Attendance::where('student_id', $student_id)
+                    ->whereDate('date', now())
+                    ->first();
+
+                if ($attendanceToday->schedules_id == 1) {
+
+                    return response()->json([
+                    'status' => 'success',
+                    'message' => 'Attendance already taken',
+                    'student' => $student,
+                ]);
+
+                } else {
+                    // Attendance does not exist for today
+                    //    mark attendance here
+                    $attendance = new Attendance();
+                    $attendance->student_id = $student_id;
+                    $attendance->course_id = 1;
+                    $attendance->schedules_id = 1;
+                    $attendance->status = "present";
+                    $attendance->date = now()->toDate();
+                    $attendance->time_in = Carbon::now('UTC');
+                    $attendance->save();
+                }
+
                 //TODO: implement attendance logiv here
-                //    mark attendance here
-                // $attendance = new Attendance();
-                // $attendance->student_id = $sid;
-                // $attendance->course_id = "";
-                // $attendance->enrollment_id = "";
-                // $attendance->status = "present";
-                // $attendance->date = "";
-                // $attendance->time_in = Carbon::now('UTC');
-                // $attendance->save();
 
 
 

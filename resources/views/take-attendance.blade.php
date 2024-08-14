@@ -12,6 +12,9 @@
             <option value="">Select a camera</option>
         </select>
 
+            <div id="status">
+                <p id="statusText"></p>
+            </div>
         <div class="relative ">
             <video id="video" autoplay class="w-5/6 mx-auto my-8 h-auto border border-gray-300 rounded-lg shadow-sm"></video>
         </div>
@@ -36,6 +39,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const studentId = document.getElementById('student_id');
         const student_details = document.getElementById('student_details');
+        const statusText = document.getElementById('statusText');
 
         const video = document.getElementById('video');
         const cameraSelect = document.getElementById('cameraSelect');
@@ -72,6 +76,7 @@
                 startRecognition();
             } catch (error) {
                 console.error('Error accessing the camera:', error);
+                statusText.innerText = `Error accessing the camera:', ${error}`;
             }
         }
 
@@ -98,10 +103,14 @@
                             console.log(`Recognized face: ${data.student.index_number}`);
                             studentId.innerText = data.student.index_number;
                             student_details.innerText = `${data.student.name}`;
-                            alert('attendance taken!')
+                            statusText.innerText = "Attendance taken"
+                            statusText.style= "color: green";
+
                         } else {
                             studentId.innerText = "No match found";
                             student_details.innerText = "";
+                            statusText.innerText = "No matching face found!"
+                            statusText.style= "color: red";
                             console.log('No match found');
                         }
                     })
