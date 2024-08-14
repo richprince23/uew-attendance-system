@@ -5,6 +5,7 @@ namespace App\Filament\Lecturer\Resources;
 use App\Filament\Lecturer\Resources\ScheduleResource\Pages;
 use App\Filament\Lecturer\Resources\ScheduleResource\RelationManagers;
 
+use App\Filament\Lecturer\Resources\ScheduleResource\RelationManagers\AttendanceRelationManager;
 use App\Models\Course;
 use App\Models\Lecturer;
 use App\Models\Schedules;
@@ -47,7 +48,7 @@ class ScheduleResource extends Resource
                 ->searchable()
                 ->required(),
 
-                TextInput::make('lecturer_id')->default($lecturer->id)->disabled()->dehydrated(),
+                TextInput::make('lecturer_id')->default($lecturer->id)->hidden()->dehydrated(),
                 TextInput::make('venue')->required(),
                 TextInput::make('room'),
                 Select::make('day')->options([
@@ -98,7 +99,7 @@ class ScheduleResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AttendanceRelationManager::class,
         ];
     }
 
