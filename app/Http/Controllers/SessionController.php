@@ -137,7 +137,8 @@ class SessionController extends Controller
                     ->whereDate('date', now())
                     ->first();
 
-                if ($attendanceToday->schedules_id ==   $schedules_id) {
+                    // check if user has already checked in 
+                if ($attendanceToday->schedules_id ==  $schedules_id) {
 
                     return response()->json([
                         'status' => 'success',
@@ -157,10 +158,6 @@ class SessionController extends Controller
                     $attendance->time_in = Carbon::now('UTC');
                     $attendance->save();
                 }
-
-                //TODO: implement attendance logiv here
-
-
 
                 return response()->json([
                     'status' => 'success',
