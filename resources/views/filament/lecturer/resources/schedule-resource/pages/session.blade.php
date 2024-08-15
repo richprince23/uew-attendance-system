@@ -1,7 +1,7 @@
 <x-filament-panels::page>
     {{-- @vite('resources/sass/app.scss') --}}
 
-    <p id="recordId">{{ $record->id }}</p>
+    <p id="recordId" class="hidden">{{ $record->id }}</p>
 
     @php
         $lecturer = \App\Models\Lecturer::where('user_id', auth()->user()->id)
@@ -57,8 +57,8 @@
             <br>
             <label for="venue" class="mt-4 mb-8">Venue for Class Session</label>
             <x-filament::input.wrapper>
-                <x-filament::input type="text" wire:model="venue" id="venue" name="venue"
-                    title="Where exactly this class is taking place" required />
+                <x-filament::input type="text" wire:model="{{$schedule->venue}}" id="venue" name="venue"
+                    title="Where exactly this class is taking place" value="{{$schedule->venue}}" required />
             </x-filament::input.wrapper>
 
             <br>

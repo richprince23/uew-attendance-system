@@ -34,6 +34,7 @@ class SessionController extends Controller
 
         //logout lecturer after session start
         auth()->logout();
+
         return view('take-attendance', compact(['course_name', 'venue', 'end_time', 'duration', 'schedules_id']));
     }
 
@@ -67,6 +68,7 @@ class SessionController extends Controller
             'course_name' => $course_name,
             'venue' => $venue,
             'duration' => $duration,
+            'schedules_id' => $schedule->id,
             'success' => true,
             'message' => 'Session started successfully'
         ], 200);
@@ -83,7 +85,7 @@ class SessionController extends Controller
     $scheduleId = $request->input('schedule_id');
 
     // Clear the session data related to attendance for the specific schedule
-    session()->forget(['course_name', 'venue', 'duration']);
+    session()->forget(['course_name', 'venue', 'duration', 'schedules_id']);
 
     return response()->json([
         'message' => 'Attendance session ended',
@@ -104,6 +106,7 @@ class SessionController extends Controller
             $sid = $request->student_id;
             // Save the image temporarily
             $imagePath = $request->file('image')->store('temp');
+            $schedules_id = session('schedules_id');
 
             // Send the image to your Python API
             $response = Http::timeout(30)->attach(
@@ -134,7 +137,7 @@ class SessionController extends Controller
                     ->whereDate('date', now())
                     ->first();
 
-                if ($attendanceToday->schedules_id == 1) {
+                if ($attendanceToday->schedules_id ==   $schedules_id) {
 
                     return response()->json([
                         'status' => 'success',
@@ -148,7 +151,7 @@ class SessionController extends Controller
                     $attendance = new Attendance();
                     $attendance->student_id = $student_id;
                     $attendance->course_id = 1;
-                    $attendance->schedules_id = 1;
+                    $attendance->schedules_id =  session('schedules_id');
                     $attendance->status = "present";
                     $attendance->date = now()->toDate();
                     $attendance->time_in = Carbon::now('UTC');
