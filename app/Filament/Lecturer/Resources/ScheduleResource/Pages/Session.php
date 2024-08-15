@@ -8,6 +8,8 @@ use Filament\Actions\Concerns\InteractsWithRecord;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Resources\Pages\Page;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class Session extends Page implements HasForms
 {
@@ -15,8 +17,12 @@ class Session extends Page implements HasForms
 
     protected static string $view = 'filament.lecturer.resources.schedule-resource.pages.session';
 
-    protected static ?string $title = 'Attendance Session';
+    protected static ?string $title = 'Start Attendance Session';
     public Schedules $record;
+
+    public $schedules_id;
+    public $duration;
+    public $venue;
 
     public function mount(Schedules $record)
     {
@@ -28,4 +34,5 @@ class Session extends Page implements HasForms
     {
         return Auth::user()->role == 'lecturer';
     }
+
 }

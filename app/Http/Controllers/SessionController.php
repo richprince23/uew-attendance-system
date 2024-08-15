@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Schedules;
 use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,22 +25,71 @@ class SessionController extends Controller
 
     public function start_session(Request $request)
     {
-        // $lecturer_id = Auth::user()->id;
-        // $lecturer_name = Auth::user()->name;
-        // $lecturer_email = Auth::user()->email;
-
-        // set parameters from session form
-        $this->course_name = "Hello";
-        $this->course_id = "";
-        $this->venue = "";
-        $this->schedules_id = "";
         $start_time = Carbon::now("UTC");
-        $end_time = Carbon::now("UTC")->addMinutes(30);
+        $course_name = session('course_name');
+        $venue = session('venue');
+        $duration = session('duration');
+        $schedules_id = session('schedules_id');
+        $end_time = Carbon::now("UTC")->addMinutes($duration);
 
-
-        return view('take-attendance', compact(['course_name', 'venue', 'course_code', 'end_time']));
-        // return view('filament.lecturer.resources.schedule-resource.pages.session', compact(['course_name', 'venue', 'course_code', 'end_time']));
+        return view('take-attendance', compact(['course_name', 'venue', 'end_time', 'duration', 'schedules_id']));
     }
+
+
+    public function configSession(Request $request)
+    {
+        $request->validate([
+            'venue' => 'required|string|max:255',
+            'duration' => 'required|integer|min:10',
+            'schedules_id' => 'required|exists:schedules,id',
+        ]);
+
+        $schedule = Schedules::where('schedules.id', $request['schedules_id'])
+            ->join('courses', 'schedules.course_id', 'courses.id')
+            ->first();
+
+        if (!$schedule) {
+            return response()->json(['message' => 'Schedule not found.'], 404);
+        }
+
+        $course_name = $schedule->course_name;
+        $venue = $request['venue'];
+        $duration = (int) $request['duration'];  // Cast to integer
+
+        session(['course_name' => $course_name, 'venue' => $venue, 'duration' => $duration, 'schedules_id'=> $schedule->id]);
+
+        // $start_time = Carbon::now("UTC");
+        // $end_time = Carbon::now("UTC")->addMinutes($duration);
+
+        return response()->json([
+            'course_name' => $course_name,
+            'venue' => $venue,
+            'duration' => $duration,
+            'success' => true,
+            'message' => 'Session started successfully'
+        ], 200);
+    }
+
+    /**
+     * Clear session data
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    public function clearSession(Request $request)
+{
+    $scheduleId = $request->input('schedule_id');
+
+    // Clear the session data related to attendance for the specific schedule
+    session()->forget(['course_name', 'venue', 'duration']);
+
+    return response()->json([
+        'message' => 'Attendance session ended',
+        'schedule_id' => $scheduleId
+    ], 200);
+}
+
+
 
     public function recognize(Request $request)
     {
@@ -85,10 +135,10 @@ class SessionController extends Controller
                 if ($attendanceToday->schedules_id == 1) {
 
                     return response()->json([
-                    'status' => 'success',
-                    'message' => 'Attendance already taken',
-                    'student' => $student,
-                ]);
+                        'status' => 'success',
+                        'message' => 'Attendance already taken',
+                        'student' => $student,
+                    ]);
 
                 } else {
                     // Attendance does not exist for today
