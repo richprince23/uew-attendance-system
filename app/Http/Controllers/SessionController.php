@@ -32,6 +32,8 @@ class SessionController extends Controller
         $schedules_id = session('schedules_id');
         $end_time = Carbon::now("UTC")->addMinutes($duration);
 
+        //logout lecturer after session start
+        auth()->logout();
         return view('take-attendance', compact(['course_name', 'venue', 'end_time', 'duration', 'schedules_id']));
     }
 
