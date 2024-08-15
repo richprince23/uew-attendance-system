@@ -4,9 +4,15 @@
     @vite('resources/sass/app.scss')
 
     <main class="" x-load-js="[@js(\Filament\Support\Facades\FilamentAsset::getScriptSrc('webcamjs'))]">
-        <p class="my-8">Capture student's face for recognition</p>
-        <p class="text-xl font-bold my-8">{{ $record->name }}</p>
-        <p class="text-xl font-bold my-8">{{ $record->id }}</p>
+        <x-filament::section>
+    <x-slot name="heading">
+       Current User details
+    </x-slot>
+    <p class="text-xl font-bold">{{ $record->name }}</p>
+    <p class="text-xl font-bold">{{ $record->id }}</p>
+
+    {{-- Content --}}
+</x-filament::section>
         <section>
             <form method="POST" enctype="multipart/form-data" action="{{ route('getEncodings') }}" id="imageForm">
                 @csrf

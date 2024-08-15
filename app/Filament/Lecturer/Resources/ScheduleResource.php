@@ -94,7 +94,7 @@ class ScheduleResource extends Resource
             ->actions([
                 EditAction::make(),
                 Action::make('Start Session')
-                ->url(fn (Schedules $record) => Session::getUrl(['record' => $record->id]))
+                ->url(fn (Schedules $record) => Session::getUrl(['record' => $record->id]))->color('success')
 
             ])
             ->bulkActions([

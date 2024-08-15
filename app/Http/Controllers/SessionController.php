@@ -12,12 +12,14 @@ use Illuminate\Support\Facades\Log;
 
 class SessionController extends Controller
 {
-    private $course_name, $course_code, $venue;
+    private $course_name, $course_id, $venue, $schedules_id;
     public function __construct()
     {
         $this->course_name = "Hello";
-        $this->course_code = "";
+        $this->course_id = "";
         $this->venue = "";
+        $this->schedules_id = "";
+
     }
 
     public function start_session(Request $request)
@@ -27,10 +29,10 @@ class SessionController extends Controller
         // $lecturer_email = Auth::user()->email;
 
         // set parameters from session form
-        $course_name = "Hello";
-        $course_code = "";
-        $venue = "";
-        $schedule_id = 1;
+        $this->course_name = "Hello";
+        $this->course_id = "";
+        $this->venue = "";
+        $this->schedules_id = "";
         $start_time = Carbon::now("UTC");
         $end_time = Carbon::now("UTC")->addMinutes(30);
 

@@ -3,6 +3,16 @@
     <p>Schedule ID: {{ $record->id }}</p>
 
     <div class="my-4">
-        <x-filament-panels::button wire:click="startSession">
+
+        <x-filament::button wire:click="openNewUserModal">
+            New user
+        </x-filament::button>
     </div>
+    <x-filament::section>
+    <x-slot name="heading">
+        Session Details
+    </x-slot>
+
+    {{-- Content --}}
+</x-filament::section>
 </x-filament-panels::page>
