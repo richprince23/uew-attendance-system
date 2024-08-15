@@ -18,7 +18,8 @@
 </head>
 
 <body>
-    <div class="h-full p-8 tb:p-12 md:p-16 border-2 border-red-500">
+    {{-- <div class="h-full p-8 tb:p-12 md:p-16 border-2 border-red-500"> --}}
+    <div class="h-full ">
         @yield('content')
     </div>
     @yield('scripts')

@@ -1,15 +1,12 @@
 @extends('layouts.main')
 @section('headers')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@vite('resources/sass/app.scss')
 @endsection
+
 @section('title', 'Attendance Session')
 
 @section('content')
-    <div class="text-center">
-        <h1 class="text-3xl font-bold tracking-tight md:text-3xl">Live Attendance Session</h1>
-        <br>
-        <h3 class="text-2xl font-bold tracking-tight md:text-3xl my-4 text-blue-500"> {{ $course_name }}</h1>
-    </div>
 
     <p id="remainingTime">{{ $duration }}</p>
 
@@ -17,6 +14,11 @@
         <div class="space-4 text-center">
 
 
+            <div class="text-center">
+                <h1 class="text-3xl font-bold tracking-tight md:text-3xl">Live Attendance Session</h1>
+                <br>
+                <h3 class="text-2xl font-bold tracking-tight md:text-3xl my-4 text-blue-500"> {{ $course_name }}</h1>
+            </div>
             <x-filament::section class="rounded-lg" id="main">
 
                 {{-- contents --}}
@@ -199,11 +201,20 @@
             </script>
         @endsection
     @else
-        <div>
-            <h3 class="text-red-500"> Attendance Session Ended!</h3>
+        <div class="flex flex-col items-center justify-center h-screen text-center">
+            <div class=" p-8 border-2 border-blue-500 rounded-lg">
+                <h3 class="text-red-500 my-8 text-3xl">Attendance Session Ended!</h3>
+                <p>
+                    <i>If you are a student, you may contact your lecturer for manual attendance recording</i>
+                </p>
 
-            <i>If you are a student, you may contact your lecturer for manual attendance recording</i>
+            </div>
+            <a href="{{url('/lecturer/schedules')}}" class="bg-blue-500 px-4 py-3 text-white mt-8 block rounded-xl"> Go to Schedules </a>
         </div>
+
     @endif
+    <style>
+        bo
+    </style>
 
 @endsection
