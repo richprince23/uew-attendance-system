@@ -65,11 +65,9 @@ class StudentResource extends Resource
                     'Group 7' => 'Group 7',
                     'Group 8' => 'Group 8',
                     'Group 9' => 'Group 9',
-                    'Group 10' => 'Group 10',
-
-
+                    'Group 10' => 'Group 10'
                 ]),
-                Select::make('department_id')->label('Select Department')->relationship('department', 'name')->searchable()
+                Select::make('department_id')->label('Select Department')->relationship('department', 'name')->searchable()->required()
 
             ]);
     }

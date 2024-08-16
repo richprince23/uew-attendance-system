@@ -12,7 +12,7 @@
     <p class="text-xl font-bold">{{ $record->id }}</p>
 
     {{-- Content --}}
-</x-filament::section>
+
         <section>
             <form method="POST" enctype="multipart/form-data" action="{{ route('getEncodings') }}" id="imageForm">
                 @csrf
@@ -54,6 +54,7 @@
                 <p class="text-xl font-bold p-4 text-black bg-white" id="res"></p>
             </div>
         </section>
+    </x-filament::section>
     </main>
 
     <script>

@@ -6,9 +6,13 @@ use App\Filament\Resources\SchedulesResource\Pages;
 use App\Filament\Resources\SchedulesResource\RelationManagers;
 use App\Filament\Resources\SchedulesResource\RelationManagers\AttendanceRelationManager;
 use App\Filament\Resources\SchedulesResource\RelationManagers\StudentRelationManager;
+use App\Models\Department;
 use App\Models\Schedules;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -27,15 +31,19 @@ class SchedulesResource extends Resource
     {
         return $form
             ->schema([
-                // Select::make('course.course_code')->relationship('course', 'course_name'),
-                // Select::make('lecturer.name')->relationship('lecturer', 'name'),
-                 // Forms\Components\Select::make('department_id')
-                //     ->label('Department')
-                //     // ->dehydrated(false)
-                //     ->options(Department::pluck('name', 'id'))
-                //     // ->afterStateUpdated(function (Livewire $livewire) {
-                //     //     $livewire->reset('data.department.id');
-                //     // }),
+                Select::make('course.course_code')->relationship('course', 'course_name')->searchable(),
+                Select::make('lecturer.name')->relationship('lecturer', 'name')->searchable(),
+                 Forms\Components\Select::make('department_id')
+                    ->label('Department')
+                    // ->dehydrated(false)
+                    ->options(Department::pluck('name', 'id'))->searchable(),
+                    // ->afterStateUpdated(function (Livewire $livewire) {
+                    //     $livewire->reset('data.department.id');
+                    // }),
+                TimePicker::make('start_time')->required(),
+                TimePicker::make('end_time')->required(),
+                TextInput::make('venue')->required(),
+                TextInput::make('room'),
             ]);
     }
 

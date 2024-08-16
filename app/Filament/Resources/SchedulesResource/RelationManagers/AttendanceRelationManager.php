@@ -32,16 +32,22 @@ class AttendanceRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('schedules_id')
             ->columns([
-                Tables\Columns\TextColumn::make('schedules_id')->hidden(),
-                Tables\Columns\TextColumn::make('student.name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('student.index_number')->sortable()->searchable()->label('Index Number'),
-                Tables\Columns\TextColumn::make('student_id')->summarize(Count::make())->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('date')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('time_in')->sortable()->searchable(),
+            //     Tables\Columns\TextColumn::make('schedules_id')->hidden(),
+            //     Tables\Columns\TextColumn::make('student.name')->searchable()->sortable(),
+            //     Tables\Columns\TextColumn::make('student.index_number')->sortable()->searchable()->label('Index Number'),
+            //     Tables\Columns\TextColumn::make('student_id')->summarize(Count::make())->sortable()->searchable(),
+            //     Tables\Columns\TextColumn::make('date')->sortable()->searchable(),
+            //     Tables\Columns\TextColumn::make('time_in')->sortable()->searchable(),
 
-            ])->groups([
-                    'student.index_number',
-                    'course.course_name',
+            TextColumn::make('name') // Temporarily use 'student_id' to check if the query works
+                ->label('Student Name')
+                ->sortable()->searchable(),
+            TextColumn::make('index_number') // Temporarily use 'student_id' to check if the query works
+                ->label('Student Number')
+                ->sortable()->searchable(),
+            TextColumn::make('attendance_count')
+                ->label('Attendance Count')
+                ->sortable(),
                 ])
             ->filters([
                 SelectFilter::make('course')->relationship('course', 'course_name'),
@@ -59,5 +65,20 @@ class AttendanceRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    protected function getTableQuery(): Builder
+    {
+        return $this->getRelation()->getQuery()
+            ->select('students.id', 'students.name', 'students.index_number', )
+            ->selectRaw('COUNT(DISTINCT attendances.id) as attendance_count')
+            ->join('students', 'attendances.student_id', '=', 'students.id')
+            ->groupBy('students.id', 'students.name')
+            ->orderBy('students.id');  // Changed from attendances.id to students.id
+    }
+
+    protected function getRelation()
+    {
+        return $this->ownerRecord->attendance();
     }
 }
