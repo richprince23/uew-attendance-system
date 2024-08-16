@@ -52,8 +52,9 @@
         </div>
 
         @section('scripts')
+            <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@latest" type="module"></script>
             <script>
-                document.addEventListener('DOMContentLoaded', function() {
+                document.addEventListener('DOMContentLoaded', async function() {
                     const studentId = document.getElementById('student_id');
                     const student_details = document.getElementById('student_details');
                     const statusText = document.getElementById('statusText');
@@ -81,6 +82,11 @@
 
                     let stream;
                     let recognitionInterval;
+
+                    // Load face-api.js models
+                    await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+                    await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+                    await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
 
                     async function populateCameraOptions() {
                         const devices = await navigator.mediaDevices.enumerateDevices();
@@ -119,35 +125,42 @@
                         if (recognitionInterval) {
                             clearInterval(recognitionInterval);
                         }
-                        recognitionInterval = setInterval(() => {
+                        recognitionInterval = setInterval(async () => {
                             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                            canvas.toBlob(blob => {
-                                const formData = new FormData();
-                                formData.append('image', blob, 'frame.jpg');
-                                fetch("{{ route('recognize') }}", {
-                                        method: 'POST',
-                                        body: formData,
-                                        headers: {
-                                            'X-CSRF-TOKEN': document.querySelector(
-                                                'meta[name="csrf-token"]').getAttribute('content')
-                                        }
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.status === 'success') {
-                                            studentId.innerText = data.student.index_number;
-                                            student_details.innerText = `${data.student.name}`;
-                                            statusText.innerText = `${data.message}`;
-                                            statusText.style.color = "green";
-                                        } else {
-                                            studentId.innerText = "No match found";
-                                            student_details.innerText = "";
-                                            statusText.innerText = `${data.message}`;
-                                            statusText.style.color = "red";
-                                        }
-                                    })
-                                    .catch(error => console.error('Error:', error));
-                            }, 'image/jpeg');
+                            const detections = await faceapi.detectAllFaces(canvas, new faceapi
+                                .TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+
+                            if (detections.length > 0) {
+                                canvas.toBlob(blob => {
+                                    const formData = new FormData();
+                                    formData.append('image', blob, 'frame.jpg');
+                                    fetch("{{ route('recognize') }}", {
+                                            method: 'POST',
+                                            body: formData,
+                                            headers: {
+                                                'X-CSRF-TOKEN': document.querySelector(
+                                                    'meta[name="csrf-token"]').getAttribute(
+                                                    'content')
+                                            }
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.status === 'success') {
+                                                studentId.innerText = data.student.index_number;
+                                                student_details.innerText =
+                                                    `${data.student.name}`;
+                                                statusText.innerText = `${data.message}`;
+                                                statusText.style.color = "green";
+                                            } else {
+                                                studentId.innerText = "No match found";
+                                                student_details.innerText = "";
+                                                statusText.innerText = `${data.message}`;
+                                                statusText.style.color = "red";
+                                            }
+                                        })
+                                        .catch(error => console.error('Error:', error));
+                                }, 'image/jpeg');
+                            }
                         }, 3000);
                     }
 
@@ -208,10 +221,11 @@
                                 cameraSelect.disabled = true; // Disable camera selection
 
                             }
-                        }).catch(error => console.error('Error clearing session:', error)).then(() => setTimeout(() => {
-                            localStorage.removeItem('sessionEndTime'); // Remove end time from localStorage
-                            location.reload(true); // Force reload from server
-                        }, 500));
+                        }).catch(error => console.error('Error clearing session:', error)).then(() => setTimeout(
+                        () => {
+                                localStorage.removeItem('sessionEndTime'); // Remove end time from localStorage
+                                location.reload(true); // Force reload from server
+                            }, 500));
                     }
                 });
             </script>
