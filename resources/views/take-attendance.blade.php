@@ -52,7 +52,7 @@
         </div>
 
         @section('scripts')
-            <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@latest" type="module"></script>
+        <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', async function() {
                     const studentId = document.getElementById('student_id');
