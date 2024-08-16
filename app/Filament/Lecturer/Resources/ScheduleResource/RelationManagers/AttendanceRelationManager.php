@@ -9,6 +9,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
@@ -22,6 +24,8 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Builder2;
+use Illuminate\Support\Carbon;
+use Log;
 
 
 
@@ -30,34 +34,45 @@ class AttendanceRelationManager extends RelationManager
     protected static string $relationship = 'attendance';
 
     public function form(Form $form): Form
-    {
-        $lecturer = Lecturer::where('user_id', auth()->user()->id)->first();
-        $lecturerId = $lecturer->id ?? 0;
+{
+    $lecturer = Lecturer::where('user_id', auth()->user()->id)->first();
+    $lecturerId = $lecturer->id ?? 0;
 
-        return $form
-            ->schema([
-                TextInput::make('schedules_id')->numeric()->hidden(),
-                Select::make('student_id')
-                    ->relationship('student', 'index_number')
-                    ->searchable()
-                    ->label("Index Number")
-                    ->required()
-                    ->placeholder('Select Index Number'),
-                TextInput::make('course_id')
-                    ->default(function (callable $get) {
-                        $scheduleId = $get('schedules_id');
-                        $schedule = \App\Models\Schedules::find($scheduleId);
-                        return $schedule ? $schedule->course_id : 0;
-                    })
-                    ->disabled(),
-                DatePicker::make('date')->required(),
-                TimePicker::make('time_in')->required(),
-                Select::make('status')->options([
-                    'present' => 'Present',
-                    'permission' => 'On Permission',
-                ]),
-            ]);
-    }
+    return $form
+        ->schema([
+            TextInput::make('schedules_id')
+                ->numeric()
+                ->default(fn () => $this->ownerRecord->id)
+                ->hidden()
+                ->dehydrated(false)->required(),
+
+            TextInput::make('course_id')
+                ->default(fn () => $this->ownerRecord->course_id)
+                // ->hidden()
+                // ->dehydrated(false)
+                ->label('Course ID')->required(),
+
+            Select::make('student_id')
+                ->relationship('student', 'index_number')
+                ->searchable()
+                ->label("Index Number")
+                ->required()
+                ->placeholder('Select Index Number'),
+
+            // TextInput::make('course_name')
+            //     ->default(fn () => $this->ownerRecord->course->course_name)
+            //     ->disabled()
+            //     ->dehydrated(false)
+            //     ->label('Course Name'),
+
+            DatePicker::make('date')->required()->default(now()->toDateString()),
+            TimePicker::make('time_in')->required()->default(Carbon::now('UTC')),
+            Select::make('status')->options([
+                'present' => 'Present',
+                'permission' => 'On Permission',
+            ])->default('present'),
+        ]);
+}
 
 
     // Select::make('course_id')

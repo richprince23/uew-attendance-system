@@ -13,6 +13,7 @@ class Attendance extends Model
         'enrollment_id',
         'course_id',
         'student_id',
+        'schedules_id',
         'date',
         'time_in',
         'status',

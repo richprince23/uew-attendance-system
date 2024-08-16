@@ -32,7 +32,7 @@ class UserResource extends Resource
                 Select::make('role')->options([
                     'lecturer' => 'Lecturer',
                     'admin' => 'Admin',
-                ]),
+                ])->label('User Type')->hiddenOn('edit'),
                 TextInput::make('password')->required()->minLength(8)->password()->revealable()
             ]);
     }
