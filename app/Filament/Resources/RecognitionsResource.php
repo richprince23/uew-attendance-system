@@ -20,6 +20,8 @@ class RecognitionsResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-face-smile';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form
