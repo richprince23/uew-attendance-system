@@ -150,53 +150,36 @@ class SessionController extends Controller
 
                 // Check if there's an attendance record for today for the same student and schedule
                 $attendanceToday = Attendance::where('student_id', $student_id)
-                ->where('schedules_id', $schedules_id)  // Ensure it's for the same schedule
-                ->whereDate('date', now()->toDateString())  // Check attendance on the same day
-                ->first();
+                    ->where('schedules_id', $schedules_id)  // Ensure it's for the same schedule
+                    ->whereDate('date', now()->toDateString())  // Check attendance on the same day
+                    ->get();
 
-                if ($attendanceToday) {
-                    // Check if the attendance is for the correct schedule
-                    if ($attendanceToday->schedules_id == $schedules_id && $attendanceToday->student_id == $student_id) {
+                foreach ($attendanceToday as $attendance) {
+                    if ($attendance->schedules_id == $schedules_id && $attendance->student_id == $student_id) {
                         return response()->json([
                             'status' => 'success',
                             'message' => 'Attendance already taken',
                             'student' => $student,
                         ]);
-                    } else {
-                        // Attendance does not exist for the correct schedule
-                        // Mark attendance here
-                        $attendance = new Attendance();
-                        $attendance->student_id = $student_id;
-                        $attendance->course_id = $courseId;
-                        $attendance->schedules_id = $schedules_id;
-                        $attendance->status = "present";
-                        $attendance->date = now()->toDateString();
-                        $attendance->time_in = Carbon::now('UTC');
-                        $attendance->save();
-
-                        return response()->json([
-                            'status' => 'success',
-                            'message' => 'Attendance recorded',
-                            'student' => $student,
-                        ]);
                     }
-                } else {
-                    // No attendance record for today, so create one
-                    $attendance = new Attendance();
-                    $attendance->student_id = $student_id;
-                    $attendance->course_id = $courseId;
-                    $attendance->schedules_id = $schedules_id;
-                    $attendance->status = "present";
-                    $attendance->date = now()->toDateString();
-                    $attendance->time_in = Carbon::now('UTC');
-                    $attendance->save();
-
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => 'Attendance recorded',
-                        'student' => $student,
-                    ]);
                 }
+
+                // No attendance record for today, so create one
+                $attendance = new Attendance();
+                $attendance->student_id = $student_id;
+                $attendance->course_id = $courseId;
+                $attendance->schedules_id = $schedules_id;
+                $attendance->status = "present";
+                $attendance->date = now()->toDateString();
+                $attendance->time_in = Carbon::now('UTC');
+                $attendance->save();
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Attendance recorded',
+                    'student' => $student,
+                ]);
+
             } else {
                 return response()->json([
                     'success' => false,

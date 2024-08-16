@@ -37,13 +37,13 @@ class RecognitionsResource extends Resource
             ->columns([
                 TextColumn::make('student.name'),
                 TextColumn::make('student.index_number'),
-                TextColumn::make('face_encoding'),
+                // TextColumn::make('face_encoding'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
