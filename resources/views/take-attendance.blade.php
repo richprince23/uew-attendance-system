@@ -52,9 +52,14 @@
         </div>
 
         @section('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', async function() {
+                    // Load face-api.js models
+                    await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+                    // await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+                    // await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+
                     const studentId = document.getElementById('student_id');
                     const student_details = document.getElementById('student_details');
                     const statusText = document.getElementById('statusText');
@@ -83,10 +88,6 @@
                     let stream;
                     let recognitionInterval;
 
-                    // Load face-api.js models
-                    await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
-                    await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
-                    await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
 
                     async function populateCameraOptions() {
                         const devices = await navigator.mediaDevices.enumerateDevices();
@@ -128,9 +129,15 @@
                         recognitionInterval = setInterval(async () => {
                             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                             const detections = await faceapi.detectAllFaces(canvas, new faceapi
-                                .TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+                                .TinyFaceDetectorOptions());
+                            // const resizedDetections = faceapi.resizeResults(detections, {
+                            //     width: video.width,
+                            //     height: video.height
+                            // });
 
                             if (detections.length > 0) {
+                                // faceapi.draw.drawDetections(canvas, resizedDetections);
+
                                 canvas.toBlob(blob => {
                                     const formData = new FormData();
                                     formData.append('image', blob, 'frame.jpg');
@@ -160,6 +167,11 @@
                                         })
                                         .catch(error => console.error('Error:', error));
                                 }, 'image/jpeg');
+                            } else {
+                                studentId.innerText = "No face detected";
+                                student_details.innerText = "";
+                                statusText.innerText = "No face detected";
+                                statusText.style.color = "red";
                             }
                         }, 3000);
                     }
@@ -222,7 +234,7 @@
 
                             }
                         }).catch(error => console.error('Error clearing session:', error)).then(() => setTimeout(
-                        () => {
+                            () => {
                                 localStorage.removeItem('sessionEndTime'); // Remove end time from localStorage
                                 location.reload(true); // Force reload from server
                             }, 500));
