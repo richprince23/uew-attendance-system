@@ -148,14 +148,15 @@ class SessionController extends Controller
 
                 Log::info($student_id);
 
-                // Check if there's an attendance record for today
+                // Check if there's an attendance record for today for the same student and schedule
                 $attendanceToday = Attendance::where('student_id', $student_id)
-                    ->whereDate('date', now()->toDateString())
-                    ->first();
+                ->where('schedules_id', $schedules_id)  // Ensure it's for the same schedule
+                ->whereDate('date', now()->toDateString())  // Check attendance on the same day
+                ->first();
 
                 if ($attendanceToday) {
                     // Check if the attendance is for the correct schedule
-                    if ($attendanceToday->schedules_id == $schedules_id) {
+                    if ($attendanceToday->schedules_id == $schedules_id && $attendanceToday->student_id == $student_id) {
                         return response()->json([
                             'status' => 'success',
                             'message' => 'Attendance already taken',
@@ -206,7 +207,7 @@ class SessionController extends Controller
             \Log::error('Error in getEncodings: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'An error occurred: ' . $e->getMessage(),
+                'message' => $e->getMessage(),
             ], 500);
         }
     }

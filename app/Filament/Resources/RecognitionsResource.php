@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -20,7 +21,7 @@ class RecognitionsResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-face-smile';
 
-    protected static bool $shouldRegisterNavigation = false;
+    // protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -34,7 +35,9 @@ class RecognitionsResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('student.name'),
+                TextColumn::make('student.index_number'),
+                TextColumn::make('face_encoding'),
             ])
             ->filters([
                 //

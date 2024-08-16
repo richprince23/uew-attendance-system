@@ -146,6 +146,7 @@
                                 canvas.toBlob(blob => {
                                     const formData = new FormData();
                                     formData.append('image', blob, 'frame.jpg');
+
                                     fetch("{{ route('recognize') }}", {
                                             method: 'POST',
                                             body: formData,
@@ -163,16 +164,27 @@
                                                     `${data.student.name}`;
                                                 statusText.innerText = `${data.message}`;
                                                 statusText.style.color = "green";
-                                                speakText(`Recorded, ${data.student.name}`);
+                                                if (data.message === "Attendance recorded") {
+                                                    speakText(`Recorded, ${data.student.name}`);
+                                                }
                                             } else {
+                                                // Clear UI when no match is found
                                                 studentId.innerText = "No match found";
                                                 student_details.innerText = "";
                                                 statusText.innerText = `${data.message}`;
                                                 statusText.style.color = "red";
                                             }
                                         })
-                                        .catch(error => console.error('Error:', error));
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                            // Clear UI on error
+                                            studentId.innerText = "Error occurred";
+                                            student_details.innerText = "";
+                                            statusText.innerText = "Error occurred";
+                                            statusText.style.color = "red";
+                                        });
                                 }, 'image/jpeg');
+
                             } else {
                                 studentId.innerText = "No face detected";
                                 student_details.innerText = "";
