@@ -15,9 +15,8 @@
 
 
             <div class="text-center">
-                <h1 class="text-3xl font-bold tracking-tight md:text-3xl">Live Attendance Session</h1>
-                <br>
-                <h3 class="text-2xl font-bold tracking-tight md:text-3xl my-4 text-blue-500"> {{ $course_name }}</h1>
+                <h1 class="text-3xl font-bold tracking-tight md:text-3xl">Live Attendance Session </h1>
+                <h3 class="text-2xl font-bold tracking-tight md:text-3xl my-4 text-blue-500"> {{ session('course_name') }}</h1>
             </div>
             <x-filament::section class="rounded-lg" id="main">
 
@@ -25,13 +24,16 @@
 
                 <div class="space-4">
                     <select id="cameraSelect"
-                        class="w-auto my-8 border-2 py-4 border-gray-300 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500">
+                        class="w-auto my-4 border-2 py-4 border-gray-300 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500">
                         <option value="">Select a camera</option>
                     </select>
+                    <br>
+
 
                     <div id="status">
                         <p id="statusText"></p>
                     </div>
+
                     <div class="relative ">
                         <video id="video" autoplay
                             class="w-1/3 mx-auto my-4 h-auto border border-gray-300 rounded-lg shadow-sm"></video>
@@ -48,6 +50,8 @@
                         </p>
                     </div>
                 </div>
+                <button id="endSessionBtn" class="bg-red-500 px-4 py-2 text-white rounded-lg mt-4">End Attendance
+                    Session</button>
             </x-filament::section>
         </div>
 
@@ -79,7 +83,7 @@
                         const now = new Date();
                         countdownDuration = Math.max(Math.floor((endTime - now) / 1000), 0);
                     } else {
-                        countdownDuration = parseInt("{{ $duration }}") * 60;
+                        countdownDuration = parseInt("{{ session('duration') }}") * 60;
                         const endTime = new Date();
                         endTime.setSeconds(endTime.getSeconds() + countdownDuration);
                         localStorage.setItem('sessionEndTime', endTime.toISOString());
@@ -239,6 +243,16 @@
                                 location.reload(true); // Force reload from server
                             }, 500));
                     }
+
+
+                    //manually end session
+                    document.getElementById('endSessionBtn').addEventListener('click', function() {
+                        // Stop the camera
+                        stopCam();
+                        // Send a request to end the session
+                        clearSessionData();
+                    });
+
                 });
             </script>
         @endsection

@@ -85,14 +85,15 @@ class SessionController extends Controller
      */
     public function clearSession(Request $request)
     {
-        $scheduleId = $request->input('schedule_id');
+        // $scheduleId = $request->input('schedule_id');
+        session('duration', 0);
 
         // Clear the session data related to attendance for the specific schedule
         session()->forget(['course_name', 'venue', 'duration', 'schedules_id', 'course_id']);
 
         return response()->json([
             'message' => 'Attendance session ended',
-            'schedule_id' => $scheduleId
+            // 'schedule_id' => $scheduleId
         ], 200);
     }
 
