@@ -25,11 +25,15 @@ class Lecturer extends Model
             $user = User::create([
                 'name' => $lecturer->name,
                 'email' => $lecturer->email,
-                'password' => bcrypt('defaultpassword'), // Set a default password, or generate a random one
+                'password' => bcrypt($lecturer->phone), // Set a default password, or generate a random one
                 'role' => 'lecturer', // Set the role to lecturer
             ]);
 
             $lecturer->user_id = $user->id;
+        });
+
+        static::deleted(function ($lecturer){
+            $lecturer->user->delete();
         });
     }
 

@@ -33,18 +33,23 @@ class Student extends Model
                 $user = User::create([
                     'name' => $student->name,
                     'email' => $student->email,
-                    'password' => bcrypt('defaultpassword'), // Set a default password, or generate a random one
+                    'password' => bcrypt($student->index_number), // Set a default password, or generate a random one
                     'role' => 'student', // Set the role to lecturer
                 ]);
-
                 $student->user_id = $user->id;
                 // $student->save();
             }
         });
 
-
+        static::deleted(function ($student){
+            $student->user->delete();
+        });
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 
     public function department()
     {
