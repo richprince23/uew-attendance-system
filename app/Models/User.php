@@ -78,4 +78,8 @@ class User extends Authenticatable implements FilamentUser
         return $this->role;
     }
 
+    public function session(){
+        return $this->hasMany(Session::class);
+    }
+
 }
