@@ -50,7 +50,7 @@
                         </p>
                     </div>
                 </div>
-                <button id="endSessionBtn" class="bg-red-500 px-4 py-2 text-white rounded-lg mt-4">End Attendance
+                <button id="endSessionBtn" class="bg-red-500 px-4 py-2 text-white rounded-2xl mt-4">End Attendance
                     Session</button>
             </x-filament::section>
         </div>
