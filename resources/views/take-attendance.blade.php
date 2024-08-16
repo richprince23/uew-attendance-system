@@ -1,14 +1,14 @@
 @extends('layouts.main')
 @section('headers')
-<meta name="csrf-token" content="{{ csrf_token() }}">
-@vite('resources/sass/app.scss')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @vite('resources/sass/app.scss')
 @endsection
 
 @section('title', 'Attendance Session')
 
 @section('content')
 
-    <p id="remainingTime">{{ $duration }}</p>
+    <p id="remainingTime"></p>
 
     @if ($duration > 0)
         <div class="space-4 text-center">
@@ -57,7 +57,6 @@
                     const studentId = document.getElementById('student_id');
                     const student_details = document.getElementById('student_details');
                     const statusText = document.getElementById('statusText');
-
                     const video = document.getElementById('video');
                     const cameraSelect = document.getElementById('cameraSelect');
                     const canvas = document.createElement('canvas');
@@ -66,7 +65,19 @@
                     const ctx = canvas.getContext('2d');
 
                     const countdownDisplay = document.getElementById("remainingTime");
-                    let countdownDuration = parseInt("{{ $duration }}");
+                    const storedEndTime = localStorage.getItem('sessionEndTime');
+                    let countdownDuration = 0;
+
+                    if (storedEndTime) {
+                        const endTime = new Date(storedEndTime);
+                        const now = new Date();
+                        countdownDuration = Math.max(Math.floor((endTime - now) / 1000), 0);
+                    } else {
+                        countdownDuration = parseInt("{{ $duration }}") * 60;
+                        const endTime = new Date();
+                        endTime.setSeconds(endTime.getSeconds() + countdownDuration);
+                        localStorage.setItem('sessionEndTime', endTime.toISOString());
+                    }
 
                     let stream;
                     let recognitionInterval;
@@ -126,7 +137,7 @@
                                         if (data.status === 'success') {
                                             studentId.innerText = data.student.index_number;
                                             student_details.innerText = `${data.student.name}`;
-                                            statusText.innerText =`${data.message}`;
+                                            statusText.innerText = `${data.message}`;
                                             statusText.style.color = "green";
                                         } else {
                                             studentId.innerText = "No match found";
@@ -168,6 +179,11 @@
                             stopCam();
                             clearSessionData();
                         }
+
+                        // Update the end time in localStorage
+                        const endTime = new Date();
+                        endTime.setSeconds(endTime.getSeconds() + countdownDuration);
+                        localStorage.setItem('sessionEndTime', endTime.toISOString());
                     }, 1000); // Update every second
 
                     function stopCam() {
@@ -193,10 +209,10 @@
 
                             }
                         }).catch(error => console.error('Error clearing session:', error)).then(() => setTimeout(() => {
+                            localStorage.removeItem('sessionEndTime'); // Remove end time from localStorage
                             location.reload(true); // Force reload from server
                         }, 500));
                     }
-
                 });
             </script>
         @endsection
@@ -209,12 +225,10 @@
                 </p>
 
             </div>
-            <a href="{{url('/lecturer/schedules')}}" class="bg-blue-500 px-4 py-3 text-white mt-8 block rounded-xl"> Go to Schedules </a>
+            <a href="{{ url('/lecturer/schedules') }}" class="bg-blue-500 px-4 py-3 text-white mt-8 block rounded-xl"> Go to
+                Schedules </a>
         </div>
 
     @endif
-    <style>
-        bo
-    </style>
 
 @endsection
