@@ -42,7 +42,7 @@ class Student extends Model
         });
 
         static::deleted(function ($student){
-            $student->user->delete();
+            User::where('id', $student->user_id)->delete();
         });
     }
 

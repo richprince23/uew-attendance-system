@@ -33,7 +33,7 @@ class Lecturer extends Model
         });
 
         static::deleted(function ($lecturer){
-            $lecturer->user->delete();
+            User::where('id', $lecturer->user_id)->delete();
         });
     }
 
