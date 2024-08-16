@@ -34,7 +34,7 @@
                     </div>
                     <div class="relative ">
                         <video id="video" autoplay
-                            class="w-5/6 mx-auto my-4 h-auto border border-gray-300 rounded-lg shadow-sm"></video>
+                            class="w-1/3 mx-auto my-4 h-auto border border-gray-300 rounded-lg shadow-sm"></video>
                     </div>
 
                     <div class="w-3/4 mx-auto p-4  bg-grey-300 border-2 border-gray-300 rounded-lg shadow-sm text-2xl">
@@ -126,12 +126,12 @@
                                         if (data.status === 'success') {
                                             studentId.innerText = data.student.index_number;
                                             student_details.innerText = `${data.student.name}`;
-                                            statusText.innerText = "Attendance taken";
+                                            statusText.innerText =`${data.message}`;
                                             statusText.style.color = "green";
                                         } else {
                                             studentId.innerText = "No match found";
                                             student_details.innerText = "";
-                                            statusText.innerText = "No matching face found!";
+                                            statusText.innerText = `${data.message}`;
                                             statusText.style.color = "red";
                                         }
                                     })

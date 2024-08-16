@@ -2,6 +2,7 @@
 
 namespace App\Filament\Lecturer\Resources\ScheduleResource\RelationManagers;
 
+use App\Models\Lecturer;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -20,7 +21,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\Builder  as Builder2;
+use Illuminate\Database\Query\Builder as Builder2;
 
 
 
@@ -30,20 +31,42 @@ class AttendanceRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
+        $lecturer = Lecturer::where('user_id', auth()->user()->id)->first();
+        $lecturerId = $lecturer->id ?? 0;
+
         return $form
             ->schema([
-                // TextInput::make('schedules_id')->numeric()->hidden(),
-                // TextInput::make('student_id')->required()->numeric(),
-                // TextInput::make('course_id')->required()->numeric(),
-                // DatePicker::make('date')->required(),
-                // TimePicker::make('time_in')->required(),
-                // Select::make('status')->options([
-                //     'present' => 'Present',
-                //     'absent' => 'Absent',
-                //     'permission' => 'On Permission',
-                // ]),
+                TextInput::make('schedules_id')->numeric()->hidden(),
+                Select::make('student_id')
+                    ->relationship('student', 'index_number')
+                    ->searchable()
+                    ->label("Index Number")
+                    ->required()
+                    ->placeholder('Select Index Number'),
+                TextInput::make('course_id')
+                    ->default(function (callable $get) {
+                        $scheduleId = $get('schedules_id');
+                        $schedule = \App\Models\Schedules::find($scheduleId);
+                        return $schedule ? $schedule->course_id : 0;
+                    })
+                    ->disabled(),
+                DatePicker::make('date')->required(),
+                TimePicker::make('time_in')->required(),
+                Select::make('status')->options([
+                    'present' => 'Present',
+                    'permission' => 'On Permission',
+                ]),
             ]);
     }
+
+
+    // Select::make('course_id')
+    //     ->required()
+    //     ->options(function () use ($lecturerId) { // Pass $lecturerId using the `use` keyword
+    //         return \App\Models\Course::where('lecturer_id', $lecturerId)
+    //             ->pluck('course_name', 'id'); // Fetches course_name as the label and id as the value
+    //     })
+    // ->label("Course"),
 
     public function table(Table $table): Table
     {
@@ -60,11 +83,11 @@ class AttendanceRelationManager extends RelationManager
                 TextColumn::make('attendance_count')
                     ->label('Attendance Count')
                     ->sortable(),
-                    // IconColumn::make('status')
-                    // ->boolean()
-                    // ->summarize(
-                    //     Count::make()->query(fn (Builder2 $query) => $query->where('attendance_count', '>', '0')),
-                    // ),
+                // IconColumn::make('status')
+                // ->boolean()
+                // ->summarize(
+                //     Count::make()->query(fn (Builder2 $query) => $query->where('attendance_count', '>', '0')),
+                // ),
             ])
             ->filters([
                 Filter::make('attendance_count')
@@ -85,7 +108,7 @@ class AttendanceRelationManager extends RelationManager
                     })
             ])
             ->headerActions([
-                // Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),

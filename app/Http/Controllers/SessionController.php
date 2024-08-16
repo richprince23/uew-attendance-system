@@ -27,6 +27,7 @@ class SessionController extends Controller
     {
         $start_time = Carbon::now("UTC");
         $course_name = session('course_name');
+        $course_id = session('course_id');
         $venue = session('venue');
         $duration = session('duration');
         $schedules_id = session('schedules_id');
@@ -35,7 +36,7 @@ class SessionController extends Controller
         //logout lecturer after session start
         auth()->logout();
 
-        return view('take-attendance', compact(['course_name', 'venue', 'end_time', 'duration', 'schedules_id']));
+        return view('take-attendance', compact(['course_name', 'venue', 'end_time', 'duration', 'schedules_id', 'course_id']));
     }
 
 
@@ -58,8 +59,10 @@ class SessionController extends Controller
         $course_name = $schedule->course_name;
         $venue = $request['venue'];
         $duration = (int) $request['duration'];  // Cast to integer
+        $scheduleId = $request['schedules_id'];
+        $courseId = $schedule->course_id;
 
-        session(['course_name' => $course_name, 'venue' => $venue, 'duration' => $duration, 'schedules_id'=> $schedule->id]);
+        session(['course_name' => $course_name, 'venue' => $venue, 'duration' => $duration, 'schedules_id' => $scheduleId, 'course_id' => $courseId]);
 
         // $start_time = Carbon::now("UTC");
         // $end_time = Carbon::now("UTC")->addMinutes($duration);
@@ -68,7 +71,7 @@ class SessionController extends Controller
             'course_name' => $course_name,
             'venue' => $venue,
             'duration' => $duration,
-            'schedules_id' => $schedule->id,
+            'schedules_id' => $scheduleId,
             'success' => true,
             'message' => 'Session started successfully'
         ], 200);
@@ -81,24 +84,28 @@ class SessionController extends Controller
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function clearSession(Request $request)
-{
-    $scheduleId = $request->input('schedule_id');
+    {
+        $scheduleId = $request->input('schedule_id');
 
-    // Clear the session data related to attendance for the specific schedule
-    session()->forget(['course_name', 'venue', 'duration', 'schedules_id']);
+        // Clear the session data related to attendance for the specific schedule
+        session()->forget(['course_name', 'venue', 'duration', 'schedules_id', 'course_id']);
 
-    return response()->json([
-        'message' => 'Attendance session ended',
-        'schedule_id' => $scheduleId
-    ], 200);
-}
+        return response()->json([
+            'message' => 'Attendance session ended',
+            'schedule_id' => $scheduleId
+        ], 200);
+    }
 
 
-
+    /**
+     * Recognize face from a captured image by processing it at Flask backedn
+     * @param \Illuminate\Http\Request $request
+     * @throws \Exception
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function recognize(Request $request)
     {
         try {
-
             $request->validate([
                 'image' => 'required|image|max:10240', // Max 10MB
             ]);
@@ -106,8 +113,15 @@ class SessionController extends Controller
             $sid = $request->student_id;
             // Save the image temporarily
             $imagePath = $request->file('image')->store('temp');
+            // Get schedule id
             $schedules_id = session('schedules_id');
+            // Get course id
+            $courseId = session('course_id');
 
+            Log::info("Schedule Id : " . $schedules_id);
+            Log::info("Course Id : " . $courseId);
+
+            // Call the Flask backend to process the image
             // Send the image to your Python API
             $response = Http::timeout(30)->attach(
                 'image',
@@ -127,43 +141,60 @@ class SessionController extends Controller
                     throw new \Exception($data['message']);
                 }
 
-                // get the student details
+                // Get the student details
                 $student_id = $data['student_id'];
                 $student = Student::find($student_id);
 
                 Log::info($student_id);
 
+                // Check if there's an attendance record for today
                 $attendanceToday = Attendance::where('student_id', $student_id)
-                    ->whereDate('date', now())
+                    ->whereDate('date', now()->toDateString())
                     ->first();
 
-                    // check if user has already checked in 
-                if ($attendanceToday->schedules_id ==  $schedules_id) {
+                if ($attendanceToday) {
+                    // Check if the attendance is for the correct schedule
+                    if ($attendanceToday->schedules_id == $schedules_id) {
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => 'Attendance already taken',
+                            'student' => $student,
+                        ]);
+                    } else {
+                        // Attendance does not exist for the correct schedule
+                        // Mark attendance here
+                        $attendance = new Attendance();
+                        $attendance->student_id = $student_id;
+                        $attendance->course_id = $courseId;
+                        $attendance->schedules_id = $schedules_id;
+                        $attendance->status = "present";
+                        $attendance->date = now()->toDateString();
+                        $attendance->time_in = Carbon::now('UTC');
+                        $attendance->save();
+
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => 'Attendance recorded',
+                            'student' => $student,
+                        ]);
+                    }
+                } else {
+                    // No attendance record for today, so create one
+                    $attendance = new Attendance();
+                    $attendance->student_id = $student_id;
+                    $attendance->course_id = $courseId;
+                    $attendance->schedules_id = $schedules_id;
+                    $attendance->status = "present";
+                    $attendance->date = now()->toDateString();
+                    $attendance->time_in = Carbon::now('UTC');
+                    $attendance->save();
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Attendance already taken',
+                        'message' => 'Attendance recorded',
                         'student' => $student,
                     ]);
-
-                } else {
-                    // Attendance does not exist for today
-                    //    mark attendance here
-                    $attendance = new Attendance();
-                    $attendance->student_id = $student_id;
-                    $attendance->course_id = 1;
-                    $attendance->schedules_id =  session('schedules_id');
-                    $attendance->status = "present";
-                    $attendance->date = now()->toDate();
-                    $attendance->time_in = Carbon::now('UTC');
-                    $attendance->save();
                 }
-
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Attendance recorded',
-                    'student' => $student,
-                ]);
             } else {
                 return response()->json([
                     'success' => false,
@@ -178,4 +209,6 @@ class SessionController extends Controller
             ], 500);
         }
     }
+
+
 }
