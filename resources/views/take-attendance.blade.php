@@ -8,7 +8,6 @@
 
 @section('content')
 
-    <p id="remainingTime"></p>
 
     @if ($duration > 0)
         <div class="space-4 text-center">
@@ -16,7 +15,9 @@
 
             <div class="text-center">
                 <h1 class="text-3xl font-bold tracking-tight md:text-3xl">Live Attendance Session </h1>
-                <h3 class="text-2xl font-bold tracking-tight md:text-3xl my-4 text-blue-500"> {{ session('course_name') }}</h1>
+                <h3 class="text-2xl font-bold tracking-tight md:text-3xl my-4 text-blue-500"> {{ session('course_name') }}
+                    </h1>
+                    <p id="remainingTime" class="text-xl"></p>
             </div>
             <x-filament::section class="rounded-lg" id="main">
 
@@ -40,8 +41,8 @@
                     </div>
 
                     <div class="w-3/4 mx-auto p-4  bg-grey-300 border-2 border-gray-300 rounded-lg shadow-sm text-2xl">
-                        <p>Recognized Student's Details:</p>
-                        <hr>
+                        {{-- <p>Recognized Student's Details:</p>
+                        <hr> --}}
                         <p class="text-2xl font-medium text-gray-500 my-4">Index Number:
                             <span id="student_id" class="text-2xl font-semibold text-gray-900"></span>
                         </p>
@@ -162,6 +163,7 @@
                                                     `${data.student.name}`;
                                                 statusText.innerText = `${data.message}`;
                                                 statusText.style.color = "green";
+                                                speakText(`Recorded, ${data.student.name}`);
                                             } else {
                                                 studentId.innerText = "No match found";
                                                 student_details.innerText = "";
@@ -176,6 +178,7 @@
                                 student_details.innerText = "";
                                 statusText.innerText = "No face detected";
                                 statusText.style.color = "red";
+                                // speakText("No face detected");
                             }
                         }, 3000);
                     }
@@ -205,6 +208,7 @@
                             clearInterval(countdownInterval);
                             countdownDisplay.innerText = "Time's up!";
                             countdownDisplay.style.color = "red";
+                            speakText("Session has timed out");
                             stopCam();
                             clearSessionData();
                         }
@@ -252,6 +256,17 @@
                         // Send a request to end the session
                         clearSessionData();
                     });
+
+                    function speakText(text) {
+                        // Create a new instance of SpeechSynthesisUtterance
+                        const utterance = new SpeechSynthesisUtterance(text);
+
+                        // Set language (optional, default is browser language)
+                        utterance.lang = 'en-US'; // You can change this to other languages like 'en-GB', 'fr-FR', etc.
+
+                        // Speak the text
+                        window.speechSynthesis.speak(utterance);
+                    }
 
                 });
             </script>
