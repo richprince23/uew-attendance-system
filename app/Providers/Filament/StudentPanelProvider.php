@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Student\Widgets\StudentStat;
+use App\Filament\Widgets\StudentAttendanceChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -25,6 +27,7 @@ class StudentPanelProvider extends PanelProvider
         return $panel
             ->id('student')
             ->path('student')
+            // ->path('')
             ->colors([
                 'primary' => Color::Indigo,
             ])
@@ -40,6 +43,8 @@ class StudentPanelProvider extends PanelProvider
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
+                StudentStat::class,
+                StudentAttendanceChart::class
             ])
             ->middleware([
                 EncryptCookies::class,

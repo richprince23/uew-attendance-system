@@ -32,6 +32,15 @@ class Lecturer extends Model
             $lecturer->user_id = $user->id;
         });
 
+        static::updated(function ($lecturer){
+            $user = User::find($lecturer->user_id);
+            $user->update([
+                'name' => $lecturer->name,
+                'email' => $lecturer->email,
+                ]);
+
+        });
+
         static::deleted(function ($lecturer){
             User::where('id', $lecturer->user_id)->delete();
         });

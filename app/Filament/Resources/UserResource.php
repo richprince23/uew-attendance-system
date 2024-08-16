@@ -28,7 +28,7 @@ class UserResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')->required()->maxLength(255),
-                TextInput::make('email')->required()->maxLength(255)->email(),
+                // TextInput::make('email')->required()->maxLength(255)->email(),
                 Select::make('role')->options([
                     'lecturer' => 'Lecturer',
                     'admin' => 'Admin',

@@ -33,7 +33,7 @@ class HomeController extends Controller
         } else if (auth()->user()->role == 'lecturer') {
             return view('app.Filament.Lecturer.Pages.Dashboard');
         } else {
-            return view('home');
+            return redirect()->to('');
         }
 
         // if (auth()->user()->hasRole('admin')) {

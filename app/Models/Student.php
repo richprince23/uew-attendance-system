@@ -41,6 +41,16 @@ class Student extends Model
             }
         });
 
+        static::updated(function ($student){
+            $user = User::find($student->user_id);
+            if ($user && $user->email != $student->email){
+                $user->update([
+                    'name' => $student->name,
+                    'email' => $student->email,
+                    ]);
+            }
+        });
+
         static::deleted(function ($student){
             User::where('id', $student->user_id)->delete();
         });
