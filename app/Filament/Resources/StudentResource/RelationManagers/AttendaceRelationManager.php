@@ -35,12 +35,12 @@ class AttendaceRelationManager extends RelationManager
             ->recordTitleAttribute('student_id')
             ->columns([
                 // TextColumn::make('student_id'),
-                TextColumn::make('student.index_number')->label("Index Number"),
-                TextColumn::make('course.course_code')->label("Course Code"),
-                TextColumn::make('course.year')->label("Course Year"),
-                TextColumn::make('course.semester')->label("Semester"),
-                TextColumn::make('course.lecturer.name')->label("Lecturer"),
-                TextColumn::make('date')->label("Date"),
+                TextColumn::make('student.index_number')->label("Index Number")->searchable()->sortable(),
+                TextColumn::make('course.course_code')->label("Course Code")->searchable()->sortable(),
+                TextColumn::make('course.year')->label("Course Year")->searchable()->sortable(),
+                TextColumn::make('course.semester')->label("Semester")->searchable()->sortable(),
+                TextColumn::make('course.lecturer.name')->label("Lecturer")->searchable()->sortable(),
+                TextColumn::make('date')->label("Date")->searchable()->sortable(),
             ])
             ->filters([
                 //
@@ -49,11 +49,11 @@ class AttendaceRelationManager extends RelationManager
                 // Tables\Actions\CreateAction::make(),
                 ExportAction::make()->exporter(StudentAttendanceExporter::class)->after(function (Export $export) {
                     // Generate the download URL
-                    $url = Storage::disk('public')->url($export->getFileDirectory() .$export->file_name);
+                    return Storage::disk('public')->url($export->getFileDirectory() . $export->file_name);
 
                     // Redirect to the download URL
-                    return redirect()->to($url);
-                })
+                    // return redirect()->to($url);
+                })->label('Export')
             ])
             ->actions([
                 // Tables\Actions\ViewAction::make(),
@@ -61,7 +61,12 @@ class AttendaceRelationManager extends RelationManager
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    // Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ExportBulkAction::make(StudentAttendanceExporter::class)->after(
+                        function (Export $export) {
+                            // Generate the download URL
+                            return Storage::disk('public')->url($export->getFileDirectory() . $export->file_name);
+                        }
+                    ),
                 ]),
             ]);
     }

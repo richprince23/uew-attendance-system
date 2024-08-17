@@ -15,12 +15,12 @@ class StudentAttendanceExporter extends Exporter
     public static function getColumns(): array
     {
         return [
-            ExportColumn::make('student.index_number'),
-            ExportColumn::make('course.course_code'),
-            ExportColumn::make('course.year'),
-            ExportColumn::make('course.semester'),
-            ExportColumn::make('course.lecturer.name'),
-            ExportColumn::make('date'),
+            ExportColumn::make('student.index_number')->label('Index Number'),
+            ExportColumn::make('course.course_code')->label('Course Code'),
+            ExportColumn::make('course.year')->label('Course Year'),
+            ExportColumn::make('course.semester')->label('Semester'),
+            ExportColumn::make('course.lecturer.name')->label('Lecturer'),
+            ExportColumn::make('date')->label('Date'),
         ];
     }
 
