@@ -17,6 +17,8 @@ class EnrollPage extends Page
 
     protected static string $view = 'filament.student.pages.enroll-page';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public function form(Form $form): Form
     {
 
