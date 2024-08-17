@@ -25,38 +25,38 @@ class AttendanceRelationManager extends RelationManager
     protected static string $relationship = 'attendance';
 
     public function form(Form $form): Form
-{
-    $lecturer = Lecturer::where('user_id', auth()->user()->id)->first();
-    $lecturerId = $lecturer->id ?? 0;
+    {
+        $lecturer = Lecturer::where('user_id', auth()->user()->id)->first();
+        $lecturerId = $lecturer->id ?? 0;
 
-    return $form
-        ->schema([
-            TextInput::make('schedules_id')
-                ->numeric()
-                ->default(fn () => $this->ownerRecord->id)
-                ->hidden()
-                ->dehydrated(false)->required(),
+        return $form
+            ->schema([
+                TextInput::make('schedules_id')
+                    ->numeric()
+                    ->default(fn() => $this->ownerRecord->id)
+                    ->hidden()
+                    ->dehydrated(false)->required(),
 
                 Hidden::make('course_id')
-                ->default(fn () => $this->ownerRecord->course_id)
-                ->label('Course ID')
-                ->required(),
+                    ->default(fn() => $this->ownerRecord->course_id)
+                    ->label('Course ID')
+                    ->required(),
 
-            Select::make('student_id')
-                ->relationship('student', 'index_number')
-                ->searchable()
-                ->label("Index Number")
-                ->required()
-                ->placeholder('Select Index Number'),
+                Select::make('student_id')
+                    ->relationship('student', 'index_number')
+                    ->searchable()
+                    ->label("Index Number")
+                    ->required()
+                    ->placeholder('Select Index Number'),
 
-            DatePicker::make('date')->required()->default(now()->toDateString()),
-            TimePicker::make('time_in')->required()->default(Carbon::now('UTC')),
-            Select::make('status')->options([
-                'present' => 'Present',
-                'permission' => 'On Permission',
-            ])->default('present'),
-        ]);
-}
+                DatePicker::make('date')->required()->default(now()->toDateString()),
+                TimePicker::make('time_in')->required()->default(Carbon::now('UTC')),
+                Select::make('status')->options([
+                    'present' => 'Present',
+                    'permission' => 'On Permission',
+                ])->default('present'),
+            ]);
+    }
 
     // Select::make('course_id')
     //     ->required()

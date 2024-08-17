@@ -4,9 +4,11 @@ namespace App\Filament\Resources\StudentResource\RelationManagers;
 
 use Filament\Actions\Action;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,18 +21,26 @@ class AttendaceRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('student__id')
-                    ->required()
-                    ->maxLength(255),
+                // TextInput::make('student_id')->required()->numeric(),
+                // TextInput::make('attendance.course.course_code')->required()->numeric(),
+                // TextInput::make('attendance.course.year')->required()->numeric(),
+                // TextInput::make('attendance.course.semester')->required(),
+                // TextInput::make('attendance.course.lecturer.name')->required()->maxLength(255),
+                // TextInput::make('date'),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('student__id')
+            ->recordTitleAttribute('student_id')
             ->columns([
-                Tables\Columns\TextColumn::make('student__id'),
+                // TextColumn::make('student_id'),
+                TextColumn::make('student.index_number')->label("Index Number"),
+                TextColumn::make('course.course_code')->label("Course Code"),
+                TextColumn::make('course.year')->label("Course Year"),
+                TextColumn::make('course.semester')->label("Course Semester"),
+                TextColumn::make('date')->label("Date"),
             ])
             ->filters([
                 //
@@ -39,8 +49,8 @@ class AttendaceRelationManager extends RelationManager
                 // Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\ViewAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
