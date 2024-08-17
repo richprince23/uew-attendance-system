@@ -44,7 +44,7 @@ class StudentAttendanceChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Attendance Count',
+                    'label' => 'Attendance Stats',
                     'data' => $data,
                     'backgroundColor' => [
                         'rgba(255, 99, 132, 0.2)',

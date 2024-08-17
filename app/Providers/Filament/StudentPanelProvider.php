@@ -29,7 +29,7 @@ class StudentPanelProvider extends PanelProvider
             ->path('student')
             // ->path('')
             ->colors([
-                'primary' => Color::Indigo,
+                'primary' => Color::Pink,
             ])
             ->login()
             ->passwordReset()

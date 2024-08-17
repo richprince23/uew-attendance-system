@@ -28,7 +28,7 @@ class EnrollmentRelationManager extends RelationManager
         return $form
             ->schema([
                Select::make('course_id')->relationship('course', 'course_name')->searchable()->required(),
-               Select::make('student_id')->relationship('student', 'name')->searchable()->required(),
+               Select::make('student_id')->relationship('student', 'index_number')->searchable()->required(),
                TextInput::make('year')->required()->numeric()->maxLength(4),
                Select::make('semester')->options([
                 'First' => 'First Semester',
