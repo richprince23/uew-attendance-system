@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\StudentResource\RelationManagers;
 
+use App\Filament\Exports\StudentAttendanceExporter;
 use Filament\Actions\Action;
+use Filament\Actions\Exports\Models\Export;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -13,6 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class AttendaceRelationManager extends RelationManager
 {
@@ -23,12 +26,6 @@ class AttendaceRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                // TextInput::make('student_id')->required()->numeric(),
-                // TextInput::make('attendance.course.course_code')->required()->numeric(),
-                // TextInput::make('attendance.course.year')->required()->numeric(),
-                // TextInput::make('attendance.course.semester')->required(),
-                // TextInput::make('attendance.course.lecturer.name')->required()->maxLength(255),
-                // TextInput::make('date'),
             ]);
     }
 
@@ -50,7 +47,13 @@ class AttendaceRelationManager extends RelationManager
             ])
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
-                ExportAction::make()
+                ExportAction::make()->exporter(StudentAttendanceExporter::class)->after(function (Export $export) {
+                    // Generate the download URL
+                    $url = Storage::disk('public')->url($export->getFileDirectory() .$export->file_name);
+
+                    // Redirect to the download URL
+                    return redirect()->to($url);
+                })
             ])
             ->actions([
                 // Tables\Actions\ViewAction::make(),
