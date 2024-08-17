@@ -5,6 +5,7 @@ namespace App\Filament\Lecturer\Resources\ScheduleResource\RelationManagers;
 use App\Models\Lecturer;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
@@ -46,11 +47,10 @@ class AttendanceRelationManager extends RelationManager
                 ->hidden()
                 ->dehydrated(false)->required(),
 
-            TextInput::make('course_id')
+                Hidden::make('course_id')
                 ->default(fn () => $this->ownerRecord->course_id)
-                // ->hidden()
-                // ->dehydrated(false)
-                ->label('Course ID')->required(),
+                ->label('Course ID')
+                ->required(),
 
             Select::make('student_id')
                 ->relationship('student', 'index_number')
@@ -58,12 +58,6 @@ class AttendanceRelationManager extends RelationManager
                 ->label("Index Number")
                 ->required()
                 ->placeholder('Select Index Number'),
-
-            // TextInput::make('course_name')
-            //     ->default(fn () => $this->ownerRecord->course->course_name)
-            //     ->disabled()
-            //     ->dehydrated(false)
-            //     ->label('Course Name'),
 
             DatePicker::make('date')->required()->default(now()->toDateString()),
             TimePicker::make('time_in')->required()->default(Carbon::now('UTC')),
@@ -73,7 +67,6 @@ class AttendanceRelationManager extends RelationManager
             ])->default('present'),
         ]);
 }
-
 
     // Select::make('course_id')
     //     ->required()
@@ -107,8 +100,8 @@ class AttendanceRelationManager extends RelationManager
             ->filters([
                 Filter::make('attendance_count')
                     ->form([
-                        Forms\Components\TextInput::make('min')->numeric(),
-                        Forms\Components\TextInput::make('max')->numeric(),
+                        TextInput::make('min')->numeric(),
+                        TextInput::make('max')->numeric(),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
