@@ -83,7 +83,7 @@ class EnrollmentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make()
+                // TextColumn::make()
             ])
             ->filters([
                 //

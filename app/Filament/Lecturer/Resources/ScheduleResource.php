@@ -10,7 +10,7 @@ use App\Filament\Lecturer\Resources\ScheduleResource\RelationManagers\Attendance
 use App\Models\Course;
 use App\Models\Lecturer;
 use App\Models\Schedules;
-use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
@@ -35,6 +35,7 @@ class ScheduleResource extends Resource
     public static function form(Form $form): Form
     {
         $lecturer = Lecturer::where('user_id', auth()->user()->id)->get()->first();
+
         return $form
             ->schema([
                 Select::make('course_id')->placeholder('Select a course')
@@ -53,7 +54,7 @@ class ScheduleResource extends Resource
                     ->searchable()
                     ->required(),
 
-                TextInput::make('lecturer_id')->default($lecturer->id)->dehydrated()->hidden(),
+                Hidden::make('lecturer_id')->default($lecturer->id),
                 TextInput::make('venue')->required(),
                 TextInput::make('room'),
                 Select::make('day')->options([
