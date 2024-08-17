@@ -38,7 +38,7 @@ class LecturerResource extends Resource
             ->schema([
                 TextInput::make('name')->required()->string(),
                 TextInput::make('phone')->required()->numeric()->maxLength(10),
-                TextInput::make('email')->required()->rules('email'),
+                TextInput::make('email')->required()->rules('email')->required(),
                 // Forms\Components\Select::make('department_id')
                 //     ->label('Department')
                 //     // ->dehydrated(false)
@@ -46,7 +46,7 @@ class LecturerResource extends Resource
                 //     // ->afterStateUpdated(function (Livewire $livewire) {
                 //     //     $livewire->reset('data.department.id');
                 //     // }),
-                Select::make('department_id')->label('Select Department')->relationship('department', 'name')->searchable(),
+                Select::make('department_id')->label('Select Department')->relationship('department', 'name')->searchable()->required(),
 
             ]);
     }

@@ -21,20 +21,20 @@ class CourseRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('department_id')->hidden(),
-                TextInput::make('course_name')->required()->maxLength(255),
-                TextInput::make('course_code')->required()->maxLength(7)->rules('uppercase'),
+                TextInput::make('course_name')->required()->maxLength(255)->required(),
+                TextInput::make('course_code')->required()->maxLength(7)->rules('uppercase')->required(),
                 Select::make('semester')->required()->options([
                     'First' =>'First',
                     'Second'=> 'Second'
-                ]),
+                ])->required(),
                 Select::make('level')->required()->options([
                     '100' =>'100',
                     '200' =>'200',
                     '300' =>'300',
                     '400' =>'400',
-                ]),
-                TextInput::make('year')->required()->maxLength(255),
-                Select::make('lecturer_id')->relationship('lecturer', 'name')->searchable()->reactive()
+                ])->required(),
+                TextInput::make('year')->required()->numeric()->maxLength(4)->required(),
+                Select::make('lecturer_id')->relationship('lecturer', 'name')->searchable()->reactive()->required()
 
             ]);
     }
@@ -62,7 +62,7 @@ class CourseRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()->modal(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
