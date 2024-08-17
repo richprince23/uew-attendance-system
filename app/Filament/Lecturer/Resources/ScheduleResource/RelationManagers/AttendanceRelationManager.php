@@ -106,7 +106,7 @@ class AttendanceRelationManager extends RelationManager
                     })
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()->label('Manual Attendance'),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
