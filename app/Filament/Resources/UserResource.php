@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -48,8 +49,12 @@ class UserResource extends Resource
             ])
             ->filters([
                 Filter::make('isNotAdmin')->default()
-                ->query(fn(Builder $query): Builder => $query->where('role', '!=', 'admin')),
+                    ->query(fn(Builder $query): Builder => $query->where('role', '!=', 'admin'))->label('Users'),
             ])
+            ->groups([
+                Group::make('role')
+                ->getTitleFromRecordUsing(fn (User $record): string => ucfirst($record->role)),
+                ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

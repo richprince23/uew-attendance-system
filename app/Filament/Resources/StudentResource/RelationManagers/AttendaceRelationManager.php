@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class AttendaceRelationManager extends RelationManager
 {
     protected static string $relationship = 'attendance';
+    protected static ?string $title = 'Attendance Records';
 
     public function form(Form $form): Form
     {
@@ -39,7 +40,8 @@ class AttendaceRelationManager extends RelationManager
                 TextColumn::make('student.index_number')->label("Index Number"),
                 TextColumn::make('course.course_code')->label("Course Code"),
                 TextColumn::make('course.year')->label("Course Year"),
-                TextColumn::make('course.semester')->label("Course Semester"),
+                TextColumn::make('course.semester')->label("Semester"),
+                TextColumn::make('course.lecturer.name')->label("Lecturer"),
                 TextColumn::make('date')->label("Date"),
             ])
             ->filters([
@@ -54,7 +56,7 @@ class AttendaceRelationManager extends RelationManager
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
