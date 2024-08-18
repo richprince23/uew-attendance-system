@@ -82,6 +82,15 @@ class ScheduleResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        // ->query(function (Builder $query) {
+        //     // Get the authenticated lecturer's ID
+        //     $lecturer = Lecturer::where('user_id', auth()->id())->first();
+
+        //     // Only show schedules for the logged-in lecturer
+        //     if ($lecturer) {
+        //         $query->where('lecturer_id', $lecturer->id);
+        //     }
+        // })
             ->columns([
                 TextColumn::make('course.course_name')->searchable()->label('Course'),
                 TextColumn::make('course.course_code')->searchable()->label('Course Code'),
@@ -121,5 +130,13 @@ class ScheduleResource extends Resource
             'edit' => Pages\EditSchedule::route('/{record}/edit'),
             'new-session' => Pages\Session::route('/{record}/new-session')
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $lecturer= Lecturer::where('user_id', auth()->user()->id)->get()->first(); // get lecturer id from user
+        // var_dump($lecturer->id);
+        return parent::getEloquentQuery()
+            ->where('lecturer_id', '=', $lecturer->id);
     }
 }
