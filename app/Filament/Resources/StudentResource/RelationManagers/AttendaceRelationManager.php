@@ -12,6 +12,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -44,6 +45,14 @@ class AttendaceRelationManager extends RelationManager
             ])
             ->filters([
                 //
+            ])
+            ->groups([
+                Group::make('course.course_name')->label('Course'),
+                Group::make('course.lecturer.name')->label('Lecturer'),
+                Group::make('course.semester')->label('Semester'),
+                Group::make('course.year')->label('Year'),
+                Group::make('date')->label('Date'),
+
             ])
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
