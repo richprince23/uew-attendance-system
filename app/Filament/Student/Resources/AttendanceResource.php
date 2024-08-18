@@ -10,7 +10,11 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Average;
+use Filament\Tables\Columns\Summarizers\Count;
+use Filament\Tables\Columns\Summarizers\Range;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -43,8 +47,8 @@ class AttendanceResource extends Resource
                 TextColumn::make('time_in')
                     ->time()
                     ->sortable(),
-                    TextColumn::make('course.year')
-                        ->sortable(),
+                TextColumn::make('course.year')
+                    ->sortable(),
                 TextColumn::make('course.semester')
                     ->sortable(),
                 TextColumn::make('status')
@@ -52,9 +56,23 @@ class AttendanceResource extends Resource
                 TextColumn::make('attendance_count')
                     ->label('Attendance Count')
                     ->sortable(),
+                TextColumn::make('status')
+                    ->numeric()
+                    ->summarize([
+                        Count::make()->label('Total'),
+                    ])
             ])
             ->filters([
-                // You can add filters here if needed
+                SelectFilter::make('course_id')
+                ->label('Course')
+                ->options(function () {
+                    $student = Student::where('user_id', auth()->user()->id)->firstOrFail();
+                    return Attendance::where('student_id', $student->id)
+                        ->join('courses', 'attendances.course_id', '=', 'courses.id')
+                        ->distinct('courses.id')
+                        ->pluck('courses.course_name', 'courses.id')
+                        ->toArray();
+                })
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
@@ -100,8 +118,14 @@ class AttendanceResource extends Resource
         $student = Student::where('user_id', auth()->user()->id)->get()->first(); // get lecturer id from user
 
         return parent::getEloquentQuery()
-        ->where('student_id', $student->id)
-        ->with('course') // Eager load the course relationship
-        ->orderBy('date', 'desc');
+            // ->where('student_id', $student->id)
+            // ->with('course') // Eager load the course relationship
+            // ->orderBy('date', 'desc');
+            ->where('student_id', $student->id)
+            ->with('course')
+            ->select('attendances.*')
+            ->join('courses', 'attendances.course_id', '=', 'courses.id')
+            ->distinct('courses.id')
+            ->orderBy('date', 'desc');
     }
 }
