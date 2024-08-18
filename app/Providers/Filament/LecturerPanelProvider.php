@@ -45,8 +45,8 @@ class LecturerPanelProvider extends PanelProvider
             // ->discoverWidgets(in: app_path('Filament/Lecturer/Widgets'), for: 'App\\Filament\\Lecturer\\Widgets')
             ->widgets([
                 // AttendanceTrend::class,
-                CourseAttendanceChart::class,
                 EnrollmentOverview::class,
+                CourseAttendanceChart::class,
             ])
             // ->authGuard('lecturer')
             ->middleware([
