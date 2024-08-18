@@ -4,7 +4,9 @@ namespace App\Providers\Filament;
 
 use App\Filament\Auth\LecturerLogin;
 use App\Filament\Lecturer\Pages\App\Profile;
+use App\Filament\Lecturer\Widgets\AttendanceTrend;
 use App\Filament\Lecturer\Widgets\EnrollmentOverview;
+use App\Filament\Widgets\CourseAttendanceChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -40,10 +42,10 @@ class LecturerPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Lecturer/Widgets'), for: 'App\\Filament\\Lecturer\\Widgets')
+            // ->discoverWidgets(in: app_path('Filament/Lecturer/Widgets'), for: 'App\\Filament\\Lecturer\\Widgets')
             ->widgets([
-                // Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class,
+                // AttendanceTrend::class,
+                CourseAttendanceChart::class,
                 EnrollmentOverview::class,
             ])
             // ->authGuard('lecturer')

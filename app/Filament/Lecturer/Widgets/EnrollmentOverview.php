@@ -10,6 +10,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class EnrollmentOverview extends BaseWidget
 {
+    protected static ?string $heading = 'Attendance Trend';
     protected function getStats(): array
     {
         $lecturer = Lecturer::where('user_id', auth()->user()->id)->first();
