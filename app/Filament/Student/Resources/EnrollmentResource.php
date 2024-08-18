@@ -83,17 +83,20 @@ class EnrollmentResource extends Resource
     {
         return $table
             ->columns([
-                // TextColumn::make()
+                TextColumn::make('course.course_name'),
+                TextColumn::make('course.lecturer.name'),
+                TextColumn::make('course.semester'),
+                TextColumn::make('course.year'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -110,7 +113,7 @@ class EnrollmentResource extends Resource
         return [
             'index' => Pages\ListEnrollments::route('/'),
             'create' => Pages\CreateEnrollment::route('/create'),
-            'edit' => Pages\EditEnrollment::route('/{record}/edit'),
+            // 'edit' => Pages\EditEnrollment::route('/{record}/edit'),
         ];
     }
 }
