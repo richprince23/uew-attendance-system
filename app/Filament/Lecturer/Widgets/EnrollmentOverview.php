@@ -12,25 +12,21 @@ class EnrollmentOverview extends BaseWidget
 {
     protected function getStats(): array
     {
-        $lecturer = Lecturer::where('user_id', auth()->user()->id)->get()->first();
-        $lecturerId = $lecturer->id ?? 0;
-        $courses = Course::query()->where('lecturer_id','=', $lecturerId)->get()->pluck('course_name');
+        $lecturer = Lecturer::where('user_id', auth()->user()->id)->first();
+
+        if (!$lecturer) {
+            return [Stat::make('Error', 'Lecturer not found')];
+        }
+
+        $courses = Course::where('lecturer_id', $lecturer->id)->get();
+
         $stats = [];
 
         foreach ($courses as $course) {
-            array_push($stats,  Stat::make($course, Enrollment::with('course.lecturer.student') // Eager load related models
-            ->whereHas('course', function ($query) {
-                $query->where('lecturer_id', Lecturer::where('user_id', auth()->user()->id)->get()->first()->pluck('id'));
-            })->count()),);
+            $enrollmentCount = Enrollment::where('course_id', $course->id)->count();
+            $stats[] = Stat::make($course->course_name, $enrollmentCount);
         }
-        return
-            // Stat::make('Total Enrollments', Enrollment::query()->count()),
 
-
-            $stats;
-            // Stat::make('Total Level 200s', Enrollment::query()->where('level', '200')->count()),
-            // Stat::make('Total Level 300s', Enrollment::query()->where('level', '300')->count()),
-            // Stat::make('Total Level 400s', Enrollment::query()->where('level', '400')->count()),
-        // ];
+        return $stats;
     }
 }
