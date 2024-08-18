@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Auth\LecturerLogin;
 use App\Filament\Lecturer\Pages\App\Profile;
+use App\Filament\Lecturer\Widgets\EnrollmentOverview;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -43,7 +44,7 @@ class LecturerPanelProvider extends PanelProvider
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
-                // EnrollmentOverview::class,
+                EnrollmentOverview::class,
             ])
             // ->authGuard('lecturer')
             ->middleware([

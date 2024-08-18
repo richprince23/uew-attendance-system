@@ -31,19 +31,15 @@ class SchedulesResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('course.course_code')->relationship('course', 'course_name')->searchable(),
-                Select::make('lecturer.name')->relationship('lecturer', 'name')->searchable(),
-                 Forms\Components\Select::make('department_id')
-                    ->label('Department')
-                    // ->dehydrated(false)
-                    ->options(Department::pluck('name', 'id'))->searchable(),
-                    // ->afterStateUpdated(function (Livewire $livewire) {
-                    //     $livewire->reset('data.department.id');
-                    // }),
-                TimePicker::make('start_time')->required(),
-                TimePicker::make('end_time')->required(),
-                TextInput::make('venue')->required(),
-                TextInput::make('room'),
+                // Select::make('course.course_code')->relationship('course', 'course_name')->searchable()->disabledOn('edit'),
+                // Select::make('lecturer.name')->relationship('lecturer', 'name')->searchable()->disabledOn('edit'),
+                //  Forms\Components\Select::make('department_id')
+                //     ->label('Department')
+                //     ->options(Department::pluck('name', 'id'))->searchable()->disabledOn('edit'),
+                // TimePicker::make('start_time')->required()->disabledOn('edit'),
+                // TimePicker::make('end_time')->required()->disabledOn('edit'),
+                // TextInput::make('venue')->required()->disabledOn('edit'),
+                // TextInput::make('room')->disabledOn('edit'),
             ]);
     }
 
@@ -64,11 +60,11 @@ class SchedulesResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

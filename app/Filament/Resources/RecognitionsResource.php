@@ -64,7 +64,7 @@ class RecognitionsResource extends Resource
         return [
             'index' => Pages\ListRecognitions::route('/'),
             'create' => Pages\CreateRecognitions::route('/create'),
-            'edit' => Pages\EditRecognitions::route('/{record}/edit'),
+            // 'edit' => Pages\EditRecognitions::route('/{record}/edit'),
         ];
     }
 }

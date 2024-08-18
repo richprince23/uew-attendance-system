@@ -27,8 +27,8 @@ class Dashboard extends \Filament\Pages\Dashboard
             ->discoverPages(in: app_path('Filament/Lecturer/Pages'), for: 'App\\Filament\\Lecturer\\Pages')
             // ->discoverWidgets()
             ->widgets([
+                EnrollmentOverview::class,
                 AttendanceTrend::class,
-                // EnrollmentOverview::class,
             ])
             ->pages([
                 Dashboard::class,
