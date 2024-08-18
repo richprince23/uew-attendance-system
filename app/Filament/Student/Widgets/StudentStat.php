@@ -15,7 +15,7 @@ class StudentStat extends BaseWidget
         $studentId = $student->id;
 
         return [
-            Stat::make('Registered Courses', Enrollment::query()->where('student_id', $studentId)->count())
+            Stat::make('Enrolled Courses', Enrollment::query()->where('student_id', $studentId)->count())
         ];
     }
 }
