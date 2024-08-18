@@ -5,6 +5,7 @@ namespace App\Filament\Student\Resources;
 use App\Filament\Student\Resources\AttendanceResource\Pages;
 use App\Filament\Student\Resources\AttendanceResource\RelationManagers;
 use App\Models\Attendance;
+use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -32,18 +33,22 @@ class AttendanceResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('student.name')
-                    ->label('Student Name')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('student.index_number')
-                    ->label('Student Number')
-                    ->sortable()
-                    ->searchable(),
                 TextColumn::make('course.course_name')
                     ->label('Course')
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('date')
+                    ->date()
+                    ->sortable(),
+                TextColumn::make('time_in')
+                    ->time()
+                    ->sortable(),
+                    TextColumn::make('course.year')
+                        ->sortable(),
+                TextColumn::make('course.semester')
+                    ->sortable(),
+                TextColumn::make('status')
+                    ->sortable(),
                 TextColumn::make('attendance_count')
                     ->label('Attendance Count')
                     ->sortable(),
@@ -52,19 +57,13 @@ class AttendanceResource extends Resource
                 // You can add filters here if needed
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->modifyQueryUsing(fn (Builder $query) =>
-            $query->selectRaw('students.name as student_name, students.index_number, courses.course_name, COUNT(attendances.id) as attendance_count')
-                  ->join('students', 'attendances.student_id', '=', 'students.id')
-                  ->join('courses', 'attendances.course_id', '=', 'courses.id')
-                  ->groupBy('students.name', 'students.index_number', 'courses.course_name')
-        );
+            ]);
     }
 
     public static function getRelations(): array
@@ -79,22 +78,30 @@ class AttendanceResource extends Resource
         return [
             'index' => Pages\ListAttendances::route('/'),
             'create' => Pages\CreateAttendance::route('/create'),
-            'edit' => Pages\EditAttendance::route('/{record}/edit'),
+            // 'edit' => Pages\EditAttendance::route('/{record}/edit'),
         ];
     }
 
     // protected function getTableQuery(): Builder
     // {
-    //     return $this->getRelation()->getQuery()
-    //         ->select('students.id', 'students.name', 'students.index_number', )
-    //         ->selectRaw('COUNT(DISTINCT attendances.id) as attendance_count')
-    //         ->join('students', 'attendances.student_id', '=', 'students.id')
-    //         ->groupBy('students.id', 'students.name')
-    //         ->orderBy('students.id');  // Changed from attendances.id to students.id
+    //     $student = Student::where('user_id', auth()->id())->get()->first();
+    //     $studentId = $student->id;
+
+    //     return Attendance::query()
+    //     ->select('attendances.id', 'attendances.date', 'attendances.time_in', 'attendances.status')
+    //     ->selectRaw('courses.course_name')
+    //     ->join('courses', 'attendances.course_id', '=', 'courses.id')
+    //     ->where('attendances.student_id', $studentId)
+    //     ->orderBy('attendances.date', 'desc');
     // }
 
-    // protected function getRelation()
-    // {
-    //     return $this->ownerRecord->attendance();
-    // }
+    public static function getEloquentQuery(): Builder
+    {
+        $student = Student::where('user_id', auth()->user()->id)->get()->first(); // get lecturer id from user
+
+        return parent::getEloquentQuery()
+        ->where('student_id', $student->id)
+        ->with('course') // Eager load the course relationship
+        ->orderBy('date', 'desc');
+    }
 }

@@ -12,10 +12,10 @@ class StudentStat extends BaseWidget
     protected function getStats(): array
     {
         $student = Student::where('user_id', auth()->id())->get()->first();
-        $studentId = $student->user_id;
+        $studentId = $student->id;
 
         return [
-            Stat::make('Registered Courses', Enrollment::query()->where('student_id', $studentId)->count()),
+            Stat::make('Registered Courses', Enrollment::query()->where('student_id', $studentId)->count())
         ];
     }
 }
